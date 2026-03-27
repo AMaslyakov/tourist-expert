@@ -1,0 +1,4 @@
+clipspy==1.0.6
+Flask==3.1.3
+Flask-WTF==1.2.2
+

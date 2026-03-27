@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Консультант по путешествиям</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1e2b3a;
+      --muted: #627084;
+      --border: #d9e1ea;
+      --accent: #006d77;
+      --accent-hover: #055b63;
+      --danger: #b00020;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at top right, #dff3f4, var(--bg) 40%);
+      color: var(--text);
+    }
+    main {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+    form {
+      display: grid;
+      gap: 14px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      color: var(--text);
+      background: #fff;
+    }
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+    .error {
+      margin-top: 6px;
+      color: var(--danger);
+      font-size: 13px;
+    }
+    .submit {
+      margin-top: 8px;
+    }
+    .submit input {
+      width: auto;
+      border: 0;
+      padding: 11px 16px;
+      color: #fff;
+      background: var(--accent);
+      cursor: pointer;
+    }
+    .submit input:hover {
+      background: var(--accent-hover);
+    }
+    .result {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #b9d9dc;
+      background: #eaf8f9;
+    }
+    .result h2 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+    }
+    .result p {
+      margin: 0;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Консультант по путешествиям</h1>
+    <p>Заполните форму, чтобы получить рекомендацию для путешествия.</p>
+    <form method="post">
+      {{ form.hidden_tag() }}
+
+      <div>
+        {{ form.departure_city.label }}
+        {{ form.departure_city(placeholder="Например: Екатеринбург") }}
+        {% for error in form.departure_city.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.budget_rub.label }}
+        {{ form.budget_rub(min=1000, step=1000, placeholder="Например: 120000") }}
+        {% for error in form.budget_rub.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.trip_days.label }}
+        {{ form.trip_days(min=1, max=60, placeholder="Например: 7") }}
+        {% for error in form.trip_days.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.climate.label }}
+        {{ form.climate() }}
+      </div>
+
+      <div>
+        {{ form.travel_type.label }}
+        {{ form.travel_type() }}
+      </div>
+
+      <div>
+        {{ form.companions.label }}
+        {{ form.companions() }}
+      </div>
+
+      <div>
+        {{ form.notes.label }}
+        {{ form.notes(placeholder="Например: нужен пляж, мало пересадок, прямой рейс.") }}
+      </div>
+
+      <div class="submit">{{ form.submit() }}</div>
+    </form>
+
+    {% if recommendation_text %}
+    <section class="result">
+      <h2>Рекомендация системы</h2>
+      <p>{{ recommendation_text }}</p>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>
