@@ -104,51 +104,18 @@
     <form method="post">
       {{ form.hidden_tag() }}
 
+      {% for field_spec in visible_fields %}
+      {% set field = form[field_spec.name] %}
       <div>
-        {{ form.departure_city.label }}
-        {{ form.departure_city(placeholder="Например: Екатеринбург") }}
-        {% for error in form.departure_city.errors %}
+        {{ field.label }}
+        {{ field() }}
+        {% for error in field.errors %}
         <div class="error">{{ error }}</div>
         {% endfor %}
       </div>
+      {% endfor %}
 
-      <div>
-        {{ form.budget_rub.label }}
-        {{ form.budget_rub(min=1000, step=1000, placeholder="Например: 120000") }}
-        {% for error in form.budget_rub.errors %}
-        <div class="error">{{ error }}</div>
-        {% endfor %}
-      </div>
-
-      <div>
-        {{ form.trip_days.label }}
-        {{ form.trip_days(min=1, max=60, placeholder="Например: 7") }}
-        {% for error in form.trip_days.errors %}
-        <div class="error">{{ error }}</div>
-        {% endfor %}
-      </div>
-
-      <div>
-        {{ form.climate.label }}
-        {{ form.climate() }}
-      </div>
-
-      <div>
-        {{ form.travel_type.label }}
-        {{ form.travel_type() }}
-      </div>
-
-      <div>
-        {{ form.companions.label }}
-        {{ form.companions() }}
-      </div>
-
-      <div>
-        {{ form.notes.label }}
-        {{ form.notes(placeholder="Например: нужен пляж, мало пересадок, прямой рейс.") }}
-      </div>
-
-      <div class="submit">{{ form.submit() }}</div>
+      <div class="submit">{{ form[submit_field_name]() }}</div>
     </form>
 
     {% if recommendation_text %}

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from app.rules import EvaluationResult, TravelRuleEngine
+from app.rules import BackwardResult, EvaluationResult, TravelRuleEngine
 
 
 class RuleEngineTests(unittest.TestCase):
@@ -54,6 +54,37 @@ class RuleEngineTests(unittest.TestCase):
         self.assertIsInstance(result, EvaluationResult)
         self.assertEqual(result.selected_rule, "warm-relax-premium")
         self.assertIn("hobby-dance-korea", result.matched_rules)
+
+    def test_backward_goal_success(self) -> None:
+        result = self.engine.backward(
+            goal="warm-relax-premium",
+            known_facts={
+                "climate": "warm",
+                "travel_type": "relax",
+                "budget_rub": 140000,
+            },
+            explain=True,
+        )
+
+        self.assertIsInstance(result, BackwardResult)
+        self.assertTrue(result.achieved)
+        self.assertEqual(result.selected_rule, "warm-relax-premium")
+        self.assertGreaterEqual(len(result.steps), 2)
+
+    def test_backward_goal_not_found(self) -> None:
+        result = self.engine.backward(
+            goal="unknown-goal",
+            known_facts={
+                "climate": "warm",
+                "travel_type": "relax",
+                "budget_rub": 140000,
+            },
+            explain=True,
+        )
+
+        self.assertIsInstance(result, BackwardResult)
+        self.assertFalse(result.achieved)
+        self.assertIsNone(result.selected_rule)
 
 
 if __name__ == "__main__":

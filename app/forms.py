@@ -1,56 +1,21 @@
+from __future__ import annotations
+
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange
+
+from app.form_factory import build_fact_payload, build_form_class, build_session_payload
+from app.knowledge import TRAVEL_FACTS
+
+LandingForm = build_form_class("LandingForm", TRAVEL_FACTS)
+
+VISIBLE_FORM_FIELDS = tuple(spec for spec in TRAVEL_FACTS if spec.field_type != "submit")
+SUBMIT_FIELD_NAME = next(
+    spec.name for spec in TRAVEL_FACTS if spec.field_type == "submit"
+)
 
 
-class LandingForm(FlaskForm):
-    departure_city = StringField(
-        "Город отправления",
-        validators=[DataRequired(message="Укажите город отправления.")],
-    )
-    budget_rub = IntegerField(
-        "Бюджет (руб.)",
-        validators=[
-            DataRequired(message="Укажите бюджет."),
-            NumberRange(min=1000, message="Бюджет должен быть не меньше 1000 руб."),
-        ],
-    )
-    trip_days = IntegerField(
-        "Длительность (дней)",
-        validators=[
-            DataRequired(message="Укажите длительность поездки."),
-            NumberRange(min=1, max=60, message="Допустимый диапазон: от 1 до 60 дней."),
-        ],
-    )
-    climate = SelectField(
-        "Предпочитаемый климат",
-        choices=[
-            ("any", "Без предпочтений"),
-            ("warm", "Теплый"),
-            ("mild", "Умеренный"),
-            ("cold", "Прохладный"),
-        ],
-        validators=[DataRequired()],
-    )
-    travel_type = SelectField(
-        "Тип отдыха",
-        choices=[
-            ("relax", "Спокойный"),
-            ("active", "Активный"),
-            ("mixed", "Смешанный"),
-            ("culture", "Культурный"),
-        ],
-        validators=[DataRequired()],
-    )
-    companions = SelectField(
-        "Состав поездки",
-        choices=[
-            ("solo", "Один"),
-            ("couple", "Пара"),
-            ("family", "Семья"),
-            ("friends", "Друзья"),
-        ],
-        validators=[DataRequired()],
-    )
-    notes = TextAreaField("Дополнительные пожелания")
-    submit = SubmitField("Начать консультацию")
+def get_evaluation_input(form: FlaskForm) -> dict[str, object]:
+    return build_fact_payload(form, TRAVEL_FACTS)
+
+
+def get_session_input(form: FlaskForm) -> dict[str, object]:
+    return build_session_payload(form, TRAVEL_FACTS)
