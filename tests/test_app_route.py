@@ -39,6 +39,14 @@ class AppRouteTests(unittest.TestCase):
         self.assertIn("Рекомендация системы", html)
         self.assertIn("пляжный отдых", html)
         save_mock.assert_called_once()
+        saved_payload = save_mock.call_args.args[0]
+        self.assertIn("explain", saved_payload)
+        self.assertIn("forward", saved_payload["explain"])
+        self.assertIn("backward", saved_payload["explain"])
+        self.assertEqual(
+            saved_payload["explain"]["forward"]["selected_rule"],
+            "warm-relax-premium",
+        )
 
 
 if __name__ == "__main__":

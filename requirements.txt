@@ -1,4 +1,3 @@
-clipspy==1.0.6
+experta==1.9.4
 Flask==3.1.3
 Flask-WTF==1.2.2
-
