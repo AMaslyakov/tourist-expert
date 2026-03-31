@@ -10,7 +10,7 @@ class RuleEngineTests(unittest.TestCase):
         self.engine = TravelRuleEngine()
 
     def test_rules_count_is_not_empty(self) -> None:
-        self.assertGreaterEqual(self.engine.rules_count(), 4)
+        self.assertGreaterEqual(self.engine.rules_count(), 50)
 
     def test_premium_relax_path(self) -> None:
         recommendation = self.engine.evaluate(
@@ -29,11 +29,8 @@ class RuleEngineTests(unittest.TestCase):
         recommendation = self.engine.evaluate(
             {
                 "climate": "cold",
-                "travel_type": "culture",
-                "companions": "solo",
                 "budget_rub": 90000,
-                "trip_days": 14,
-                "hobby": "hiking",
+                "season": "winter",
             }
         )
         self.assertIn("универсальный экскурсионный отдых", recommendation)
@@ -54,14 +51,19 @@ class RuleEngineTests(unittest.TestCase):
         self.assertIsInstance(result, EvaluationResult)
         self.assertEqual(result.selected_rule, "warm-relax-premium")
         self.assertIn("hobby-dance-korea", result.matched_rules)
+        self.assertGreater(len(result.steps), 50)
 
     def test_backward_goal_success(self) -> None:
         result = self.engine.backward(
-            goal="warm-relax-premium",
+            goal="*",
             known_facts={
+                "season": "summer",
                 "climate": "warm",
                 "travel_type": "relax",
                 "budget_rub": 140000,
+                "service_level": "premium",
+                "visa_mode": "visa_ready",
+                "insurance": "yes",
             },
             explain=True,
         )
@@ -69,7 +71,7 @@ class RuleEngineTests(unittest.TestCase):
         self.assertIsInstance(result, BackwardResult)
         self.assertTrue(result.achieved)
         self.assertEqual(result.selected_rule, "warm-relax-premium")
-        self.assertGreaterEqual(len(result.steps), 2)
+        self.assertGreater(len(result.steps), 50)
 
     def test_backward_goal_not_found(self) -> None:
         result = self.engine.backward(

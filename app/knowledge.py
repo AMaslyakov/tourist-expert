@@ -48,6 +48,23 @@ TRAVEL_FACTS: tuple[FactSpec, ...] = (
         ui={"placeholder": "Например: Екатеринбург"},
     ),
     FactSpec(
+        name="season",
+        label="Сезон поездки",
+        field_type="select",
+        required=True,
+        choices=(
+            ("any", "Без предпочтений"),
+            ("spring", "Весна"),
+            ("summer", "Лето"),
+            ("autumn", "Осень"),
+            ("winter", "Зима"),
+        ),
+        validators=(
+            ValidatorSpec(kind="required", message="Выберите сезон поездки."),
+        ),
+        fact_slot="season",
+    ),
+    FactSpec(
         name="hobby",
         label="Увлечение",
         field_type="select",
@@ -123,6 +140,10 @@ TRAVEL_FACTS: tuple[FactSpec, ...] = (
             ("active", "Активный"),
             ("mixed", "Смешанный"),
             ("culture", "Культурный"),
+            ("health", "Оздоровительный"),
+            ("business", "Деловой"),
+            ("eco", "Экологический"),
+            ("education", "Обучающий"),
         ),
         validators=(
             ValidatorSpec(kind="required", message="Выберите тип отдыха."),
@@ -144,6 +165,53 @@ TRAVEL_FACTS: tuple[FactSpec, ...] = (
             ValidatorSpec(kind="required", message="Выберите состав поездки."),
         ),
         fact_slot="companions",
+    ),
+    FactSpec(
+        name="service_level",
+        label="Уровень сервиса",
+        field_type="select",
+        required=True,
+        choices=(
+            ("economy", "Эконом"),
+            ("standard", "Стандарт"),
+            ("premium", "Премиум"),
+        ),
+        validators=(
+            ValidatorSpec(kind="required", message="Выберите уровень сервиса."),
+        ),
+        fact_slot="service_level",
+    ),
+    FactSpec(
+        name="visa_mode",
+        label="Визовые ограничения",
+        field_type="select",
+        required=True,
+        choices=(
+            ("any", "Не важно"),
+            ("visa_free_only", "Только без визы"),
+            ("visa_ready", "Готов(а) оформить визу"),
+        ),
+        validators=(
+            ValidatorSpec(kind="required", message="Укажите визовые ограничения."),
+        ),
+        fact_slot="visa_mode",
+    ),
+    FactSpec(
+        name="insurance",
+        label="Страховка",
+        field_type="select",
+        required=True,
+        choices=(
+            ("yes", "Страховка оформлена или будет оформлена"),
+            ("no", "Без страховки"),
+        ),
+        validators=(
+            ValidatorSpec(
+                kind="required",
+                message="Укажите, готовы ли вы оформить страховку.",
+            ),
+        ),
+        fact_slot="insurance",
     ),
     FactSpec(
         name="notes",

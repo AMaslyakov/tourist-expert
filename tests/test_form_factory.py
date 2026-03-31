@@ -33,12 +33,16 @@ class FormFactoryTests(unittest.TestCase):
             formdata=MultiDict(
                 {
                     "departure_city": "Екатеринбург",
+                    "season": "summer",
                     "hobby": "dance",
                     "budget_rub": "120000",
                     "trip_days": "10",
                     "climate": "warm",
                     "travel_type": "relax",
                     "companions": "couple",
+                    "service_level": "premium",
+                    "visa_mode": "visa_ready",
+                    "insurance": "yes",
                     "notes": "Только прямые рейсы",
                     "submit": "1",
                 }
@@ -51,11 +55,15 @@ class FormFactoryTests(unittest.TestCase):
         self.assertEqual(
             payload,
             {
+                "season": "summer",
                 "budget_rub": 120000,
                 "trip_days": 10,
                 "climate": "warm",
                 "travel_type": "relax",
                 "companions": "couple",
+                "service_level": "premium",
+                "visa_mode": "visa_ready",
+                "insurance": "yes",
                 "hobby": "dance",
             },
         )

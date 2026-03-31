@@ -43,7 +43,7 @@ def create_app() -> Flask:
                 if isinstance(evaluation_result, EvaluationResult):
                     recommendation_text = evaluation_result.recommendation
                     backward_result = engine.backward(
-                        goal=evaluation_result.selected_rule,
+                        goal="*",
                         known_facts=evaluation_input,
                         explain=True,
                     )
@@ -58,6 +58,7 @@ def create_app() -> Flask:
                                     "selected_rule": evaluation_result.selected_rule,
                                     "elapsed_ms": evaluation_result.elapsed_ms,
                                     "passes": evaluation_result.passes,
+                                    "steps": list(evaluation_result.steps),
                                 },
                                 "backward": {
                                     "goal": backward_result.goal,

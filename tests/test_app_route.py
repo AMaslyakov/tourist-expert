@@ -21,12 +21,16 @@ class AppRouteTests(unittest.TestCase):
     def test_index_post_builds_recommendation_and_saves_session(self) -> None:
         post_data = {
             "departure_city": "Екатеринбург",
+            "season": "summer",
             "hobby": "dance",
             "budget_rub": "130000",
             "trip_days": "10",
             "climate": "warm",
             "travel_type": "relax",
             "companions": "couple",
+            "service_level": "premium",
+            "visa_mode": "visa_ready",
+            "insurance": "yes",
             "notes": "Без пересадок",
             "submit": "1",
         }
@@ -43,8 +47,14 @@ class AppRouteTests(unittest.TestCase):
         self.assertIn("explain", saved_payload)
         self.assertIn("forward", saved_payload["explain"])
         self.assertIn("backward", saved_payload["explain"])
+        self.assertIn("steps", saved_payload["explain"]["forward"])
         self.assertEqual(
             saved_payload["explain"]["forward"]["selected_rule"],
+            "warm-relax-premium",
+        )
+        self.assertEqual(saved_payload["explain"]["backward"]["goal"], "*")
+        self.assertEqual(
+            saved_payload["explain"]["backward"]["selected_rule"],
             "warm-relax-premium",
         )
 
