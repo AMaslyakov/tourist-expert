@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Travel illustration</title>
+  <desc id="desc">Stylized beach and mountains</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#8ed6ff" />
+      <stop offset="100%" stop-color="#eaf8ff" />
+    </linearGradient>
+    <linearGradient id="sea" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#2f8fb7" />
+      <stop offset="100%" stop-color="#54b3d7" />
+    </linearGradient>
+    <linearGradient id="sand" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#f9d27c" />
+      <stop offset="100%" stop-color="#ffe7ae" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#sky)" />
+  <circle cx="980" cy="110" r="62" fill="#ffd36a" />
+  <path d="M0 330 L210 190 L320 260 L470 140 L640 295 L790 180 L980 300 L1200 250 L1200 700 L0 700 Z" fill="#3f7a68" opacity="0.86" />
+  <path d="M0 375 Q290 315 600 370 T1200 350 L1200 700 L0 700 Z" fill="url(#sea)" />
+  <path d="M0 520 Q300 460 600 530 T1200 500 L1200 700 L0 700 Z" fill="url(#sand)" />
+  <path d="M210 530 C280 470 430 470 500 530 C450 560 270 560 210 530 Z" fill="#ffffff" opacity="0.58" />
+  <path d="M765 530 C840 470 980 470 1040 530 C985 560 825 560 765 530 Z" fill="#ffffff" opacity="0.58" />
+</svg>

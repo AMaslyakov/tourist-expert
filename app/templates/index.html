@@ -16,40 +16,55 @@
       --accent-hover: #055b63;
       --danger: #b00020;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
+      padding: 24px;
       font-family: "Segoe UI", Tahoma, sans-serif;
       background: radial-gradient(circle at top right, #dff3f4, var(--bg) 40%);
       color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    main {
-      max-width: 760px;
-      margin: 40px auto;
+
+    .form-panel {
+      width: min(760px, 100%);
       padding: 24px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(30, 43, 58, 0.08);
     }
+
     h1 {
       margin-top: 0;
       margin-bottom: 8px;
     }
+
     p {
       margin-top: 0;
       color: var(--muted);
     }
+
     form {
       display: grid;
       gap: 14px;
     }
+
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
     }
+
     input, select, textarea {
       width: 100%;
-      box-sizing: border-box;
       padding: 10px 12px;
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -57,48 +72,122 @@
       color: var(--text);
       background: #fff;
     }
+
     textarea {
       min-height: 110px;
       resize: vertical;
     }
+
     .error {
       margin-top: 6px;
       color: var(--danger);
       font-size: 13px;
     }
+
     .submit {
       margin-top: 8px;
     }
-    .submit input {
+
+    .submit input,
+    .new-consultation-btn {
       width: auto;
       border: 0;
       padding: 11px 16px;
       color: #fff;
       background: var(--accent);
+      border-radius: 9px;
       cursor: pointer;
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.2;
+      transition: background 120ms ease-in-out;
     }
-    .submit input:hover {
+
+    .submit input:hover,
+    .new-consultation-btn:hover {
       background: var(--accent-hover);
     }
-    .result {
-      margin-top: 20px;
-      padding: 14px 16px;
-      border-radius: 10px;
+
+    .result-layout {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .recommendation-card {
+      width: 40vw;
+      height: 80vh;
+      min-width: 300px;
+      max-width: 640px;
+      min-height: 520px;
+      max-height: 860px;
+      border-radius: 16px;
+      overflow: hidden;
       border: 1px solid #b9d9dc;
-      background: #eaf8f9;
+      background: var(--card);
+      box-shadow: 0 16px 36px rgba(30, 43, 58, 0.14);
+      display: flex;
+      flex-direction: column;
     }
-    .result h2 {
-      margin: 0 0 8px 0;
-      font-size: 18px;
+
+    .recommendation-media {
+      width: 100%;
+      height: 52%;
+      object-fit: cover;
+      border-bottom: 1px solid #d9e1ea;
     }
-    .result p {
+
+    .recommendation-body {
+      height: 48%;
+      padding: 18px 20px 20px;
+      overflow: auto;
+    }
+
+    .recommendation-body h2 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+    }
+
+    .recommendation-body p {
       margin: 0;
       color: var(--text);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 14px;
+      }
+
+      .recommendation-card {
+        width: min(520px, 92vw);
+        height: 80vh;
+        min-height: 500px;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
+  {% if recommendation_text %}
+  <section class="result-layout" aria-live="polite">
+    <article class="recommendation-card">
+      <img
+        class="recommendation-media"
+        src="{{ url_for('static', filename='images/recommendation-cover.svg') }}"
+        alt="Иллюстрация путешествия"
+      >
+      <div class="recommendation-body">
+        <h2>Рекомендация системы</h2>
+        <p>{{ recommendation_text }}</p>
+      </div>
+    </article>
+    <a class="new-consultation-btn" href="{{ url_for('index') }}">Новая консультация</a>
+  </section>
+  {% else %}
+  <main class="form-panel">
     <h1>Консультант по путешествиям</h1>
     <p>Заполните форму, чтобы получить рекомендацию для путешествия.</p>
     <form method="post">
@@ -117,13 +206,7 @@
 
       <div class="submit">{{ form[submit_field_name]() }}</div>
     </form>
-
-    {% if recommendation_text %}
-    <section class="result">
-      <h2>Рекомендация системы</h2>
-      <p>{{ recommendation_text }}</p>
-    </section>
-    {% endif %}
   </main>
+  {% endif %}
 </body>
 </html>
