@@ -43,7 +43,7 @@ class RuleEngineTests(unittest.TestCase):
                 "companions": "couple",
                 "budget_rub": 130000,
                 "trip_days": 9,
-                "hobby": "dance",
+                "hobby": "museum",
             },
             explain=True,
         )

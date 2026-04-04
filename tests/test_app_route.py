@@ -22,7 +22,7 @@ class AppRouteTests(unittest.TestCase):
         post_data = {
             "departure_city": "Екатеринбург",
             "season": "summer",
-            "hobby": "dance",
+            "hobby": "museum",
             "budget_rub": "130000",
             "trip_days": "10",
             "climate": "warm",

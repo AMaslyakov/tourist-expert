@@ -34,7 +34,7 @@ class FormFactoryTests(unittest.TestCase):
                 {
                     "departure_city": "Екатеринбург",
                     "season": "summer",
-                    "hobby": "dance",
+                    "hobby": "museum",
                     "budget_rub": "120000",
                     "trip_days": "10",
                     "climate": "warm",
@@ -64,7 +64,7 @@ class FormFactoryTests(unittest.TestCase):
                 "service_level": "premium",
                 "visa_mode": "visa_ready",
                 "insurance": "yes",
-                "hobby": "dance",
+                "hobby": "museum",
             },
         )
 
