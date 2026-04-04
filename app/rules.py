@@ -41,10 +41,12 @@ class BackwardResult:
     goal: str
     achieved: bool
     selected_rule: str | None
+    matched_rules: tuple[str, ...]
     recommendation: str | None
     elapsed_ms: float
     passes: int
     steps: tuple[dict[str, Any], ...]
+    proof: dict[str, Any] | None = None
 
 
 def _register_rule(
@@ -62,6 +64,8 @@ def _register_rule(
     )
 
     def decorator(rule_callable: Callable[..., Any]) -> Callable[..., Any]:
+        # Keep metadata priority and experta conflict priority in sync.
+        setattr(rule_callable, "salience", priority)
         setattr(rule_callable, "_travel_rule_metadata", metadata)
         return rule_callable
 
@@ -157,7 +161,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(climate="warm", travel_type="relax", budget_rub=MATCH.budget),
         TEST(lambda budget: budget >= 100000),
-        salience=340,
     )
     def rule_warm_relax_premium(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("warm-relax-premium")
@@ -175,7 +178,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="companions", op="eq", value="family"),
         ),
     )
-    @Rule(TravelInput(season="summer", climate="warm", companions="family"), salience=338)
+    @Rule(TravelInput(season="summer", climate="warm", companions="family"))
     def rule_summer_family_beach(self) -> None:
         self.register_match("summer-family-beach")
 
@@ -192,7 +195,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="active"),
         ),
     )
-    @Rule(TravelInput(season="winter", climate="cold", travel_type="active"), salience=337)
+    @Rule(TravelInput(season="winter", climate="cold", travel_type="active"))
     def rule_winter_active_ski(self) -> None:
         self.register_match("winter-active-ski")
 
@@ -209,7 +212,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="insurance", op="eq", value="yes"),
         ),
     )
-    @Rule(TravelInput(companions="family", travel_type="health", insurance="yes"), salience=336)
+    @Rule(TravelInput(companions="family", travel_type="health", insurance="yes"))
     def rule_family_health_insured(self) -> None:
         self.register_match("family-health-insured")
 
@@ -233,7 +236,6 @@ class _TravelExpertEngine(KnowledgeEngine):
             budget_rub=MATCH.budget,
         ),
         TEST(lambda budget: budget >= 90000),
-        salience=335,
     )
     def rule_business_premium_city(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("business-premium-city")
@@ -257,7 +259,6 @@ class _TravelExpertEngine(KnowledgeEngine):
             companions="family",
             climate="warm",
         ),
-        salience=334,
     )
     def rule_visa_free_family_sea(self) -> None:
         self.register_match("visa-free-family-sea")
@@ -275,7 +276,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="hobby", op="eq", value="hiking"),
         ),
     )
-    @Rule(TravelInput(travel_type="eco", season="spring", hobby="hiking"), salience=333)
+    @Rule(TravelInput(travel_type="eco", season="spring", hobby="hiking"))
     def rule_eco_spring_hike(self) -> None:
         self.register_match("eco-spring-hike")
 
@@ -291,7 +292,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="hobby", op="eq", value="food"),
         ),
     )
-    @Rule(TravelInput(travel_type="education", hobby="food"), salience=332)
+    @Rule(TravelInput(travel_type="education", hobby="food"))
     def rule_education_food_workshop(self) -> None:
         self.register_match("education-food-workshop")
 
@@ -307,7 +308,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
         ),
     )
-    @Rule(TravelInput(hobby="dance", travel_type="culture"), salience=331)
+    @Rule(TravelInput(hobby="dance", travel_type="culture"))
     def rule_dance_culture_festival(self) -> None:
         self.register_match("dance-culture-festival")
 
@@ -327,7 +328,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(hobby="museum", travel_type="culture", budget_rub=MATCH.budget),
         TEST(lambda budget: budget >= 85000),
-        salience=330,
     )
     def rule_museum_culture_grand_tour(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("museum-culture-grand-tour")
@@ -345,7 +345,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="active"),
         ),
     )
-    @Rule(TravelInput(hobby="hiking", season="winter", travel_type="active"), salience=329)
+    @Rule(TravelInput(hobby="hiking", season="winter", travel_type="active"))
     def rule_hiking_winter_adventure(self) -> None:
         self.register_match("hiking-winter-adventure")
 
@@ -364,7 +364,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     )
     @Rule(
         TravelInput(companions="couple", season="autumn", travel_type="culture"),
-        salience=328,
     )
     def rule_couple_autumn_culture(self) -> None:
         self.register_match("couple-autumn-culture")
@@ -384,7 +383,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     )
     @Rule(
         TravelInput(companions="friends", season="winter", travel_type="active"),
-        salience=327,
     )
     def rule_friends_winter_sport(self) -> None:
         self.register_match("friends-winter-sport")
@@ -405,7 +403,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(companions="solo", travel_type="active", trip_days=MATCH.days),
         TEST(lambda days: days >= 6),
-        salience=326,
     )
     def rule_solo_active_adventure(self, days: int) -> None:  # noqa: ARG002
         self.register_match("solo-active-adventure")
@@ -422,7 +419,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="insurance", op="eq", value="no"),
         ),
     )
-    @Rule(TravelInput(travel_type="active", insurance="no"), salience=325)
+    @Rule(TravelInput(travel_type="active", insurance="no"))
     def rule_no_insurance_active_safe(self) -> None:
         self.register_match("no-insurance-active-safe")
 
@@ -438,7 +435,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="insurance", op="eq", value="no"),
         ),
     )
-    @Rule(TravelInput(climate="cold", insurance="no"), salience=324)
+    @Rule(TravelInput(climate="cold", insurance="no"))
     def rule_no_insurance_cold_safe(self) -> None:
         self.register_match("no-insurance-cold-safe")
 
@@ -461,7 +458,6 @@ class _TravelExpertEngine(KnowledgeEngine):
             travel_type="relax",
             service_level="premium",
         ),
-        salience=323,
     )
     def rule_premium_visa_ready_relax(self) -> None:
         self.register_match("premium-visa-ready-relax")
@@ -482,7 +478,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="active", budget_rub=MATCH.budget, trip_days=MATCH.days),
         TEST(lambda budget, days: budget < 100000 and days <= 7),
-        salience=310,
     )
     def rule_active_short_budget(self, budget: int, days: int) -> None:  # noqa: ARG002
         self.register_match("active-short-budget")
@@ -499,24 +494,9 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="climate", op="eq", value="mild"),
         ),
     )
-    @Rule(TravelInput(companions="family", climate="mild"), salience=305)
+    @Rule(TravelInput(companions="family", climate="mild"))
     def rule_family_mild_climate(self) -> None:
         self.register_match("family-mild-climate")
-
-    @_register_rule(
-        name="hobby-dance-korea",
-        priority=300,
-        recommendation=(
-            "Рекомендуется поездка в Южную Корею или другой яркий городской "
-            "центр танцевальной культуры."
-        ),
-        conditions=(
-            ConditionSpec(slot="hobby", op="eq", value="dance"),
-        ),
-    )
-    @Rule(TravelInput(hobby="dance"), salience=300)
-    def rule_hobby_dance_korea(self) -> None:
-        self.register_match("hobby-dance-korea")
 
     @_register_rule(
         name="budget-weekend-domestic",
@@ -533,7 +513,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(budget_rub=MATCH.budget, trip_days=MATCH.days),
         TEST(lambda budget, days: budget < 50000 and days <= 3),
-        salience=295,
     )
     def rule_budget_weekend_domestic(self, budget: int, days: int) -> None:  # noqa: ARG002
         self.register_match("budget-weekend-domestic")
@@ -553,7 +532,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="culture", trip_days=MATCH.days),
         TEST(lambda days: days <= 5),
-        salience=294,
     )
     def rule_culture_short_citybreak(self, days: int) -> None:  # noqa: ARG002
         self.register_match("culture-short-citybreak")
@@ -576,7 +554,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="relax", budget_rub=MATCH.budget, trip_days=MATCH.days),
         TEST(lambda budget, days: 70000 <= budget < 130000 and 5 <= days <= 10),
-        salience=293,
     )
     def rule_relax_medium_resort(self, budget: int, days: int) -> None:  # noqa: ARG002
         self.register_match("relax-medium-resort")
@@ -596,7 +573,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="health", trip_days=MATCH.days),
         TEST(lambda days: days <= 8),
-        salience=292,
     )
     def rule_health_short_retreat(self, days: int) -> None:  # noqa: ARG002
         self.register_match("health-short-retreat")
@@ -616,7 +592,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="business", trip_days=MATCH.days),
         TEST(lambda days: days <= 4),
-        salience=291,
     )
     def rule_business_short_standard(self, days: int) -> None:  # noqa: ARG002
         self.register_match("business-short-standard")
@@ -636,7 +611,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="eco", budget_rub=MATCH.budget),
         TEST(lambda budget: budget < 90000),
-        salience=290,
     )
     def rule_eco_budget_trail(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("eco-budget-trail")
@@ -657,7 +631,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="mixed", trip_days=MATCH.days),
         TEST(lambda days: 7 <= days <= 10),
-        salience=289,
     )
     def rule_mixed_week_combo(self, days: int) -> None:  # noqa: ARG002
         self.register_match("mixed-week-combo")
@@ -678,7 +651,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="culture", trip_days=MATCH.days, budget_rub=MATCH.budget),
         TEST(lambda days, budget: days >= 10 and budget >= 90000),
-        salience=288,
     )
     def rule_long_culture_grand_tour(self, days: int, budget: int) -> None:  # noqa: ARG002
         self.register_match("long-culture-grand-tour")
@@ -699,7 +671,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(travel_type="active", trip_days=MATCH.days, budget_rub=MATCH.budget),
         TEST(lambda days, budget: days >= 12 and budget >= 110000),
-        salience=287,
     )
     def rule_long_active_expedition(self, days: int, budget: int) -> None:  # noqa: ARG002
         self.register_match("long-active-expedition")
@@ -719,7 +690,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     )
     @Rule(
         TravelInput(companions="couple", travel_type="relax", service_level="premium"),
-        salience=286,
     )
     def rule_couple_relax_premium(self) -> None:
         self.register_match("couple-relax-premium")
@@ -739,7 +709,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(companions="friends", budget_rub=MATCH.budget),
         TEST(lambda budget: budget < 90000),
-        salience=285,
     )
     def rule_friends_budget_roadtrip(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("friends-budget-roadtrip")
@@ -760,7 +729,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(companions="family", travel_type="culture", trip_days=MATCH.days),
         TEST(lambda days: days <= 7),
-        salience=284,
     )
     def rule_family_culture_schoolbreak(self, days: int) -> None:  # noqa: ARG002
         self.register_match("family-culture-schoolbreak")
@@ -776,7 +744,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="season", op="eq", value="summer"),
         ),
     )
-    @Rule(TravelInput(climate="warm", season="summer"), salience=283)
+    @Rule(TravelInput(climate="warm", season="summer"))
     def rule_warm_summer_beach(self) -> None:
         self.register_match("warm-summer-beach")
 
@@ -793,7 +761,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="relax"),
         ),
     )
-    @Rule(TravelInput(climate="cold", season="winter", travel_type="relax"), salience=282)
+    @Rule(TravelInput(climate="cold", season="winter", travel_type="relax"))
     def rule_cold_winter_relax(self) -> None:
         self.register_match("cold-winter-relax")
 
@@ -809,7 +777,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="season", op="eq", value="spring"),
         ),
     )
-    @Rule(TravelInput(climate="mild", season="spring"), salience=281)
+    @Rule(TravelInput(climate="mild", season="spring"))
     def rule_mild_spring_city(self) -> None:
         self.register_match("mild-spring-city")
 
@@ -826,7 +794,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="hobby", op="eq", value="food"),
         ),
     )
-    @Rule(TravelInput(climate="warm", season="autumn", hobby="food"), salience=280)
+    @Rule(TravelInput(climate="warm", season="autumn", hobby="food"))
     def rule_warm_autumn_gastro(self) -> None:
         self.register_match("warm-autumn-gastro")
 
@@ -846,7 +814,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(climate="cold", travel_type="culture", trip_days=MATCH.days),
         TEST(lambda days: days <= 4),
-        salience=279,
     )
     def rule_cold_short_culture(self, days: int) -> None:  # noqa: ARG002
         self.register_match("cold-short-culture")
@@ -866,7 +833,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(visa_mode="visa_free_only", trip_days=MATCH.days),
         TEST(lambda days: days <= 7),
-        salience=278,
     )
     def rule_visa_free_short_trip(self, days: int) -> None:  # noqa: ARG002
         self.register_match("visa-free-short-trip")
@@ -891,7 +857,6 @@ class _TravelExpertEngine(KnowledgeEngine):
             trip_days=MATCH.days,
         ),
         TEST(lambda days: days <= 5),
-        salience=277,
     )
     def rule_visa_free_business_quick(self, days: int) -> None:  # noqa: ARG002
         self.register_match("visa-free-business-quick")
@@ -908,7 +873,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="health"),
         ),
     )
-    @Rule(TravelInput(insurance="yes", travel_type="health"), salience=276)
+    @Rule(TravelInput(insurance="yes", travel_type="health"))
     def rule_insurance_health_therapy(self) -> None:
         self.register_match("insurance-health-therapy")
 
@@ -927,7 +892,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(service_level="premium", budget_rub=MATCH.budget),
         TEST(lambda budget: budget >= 120000),
-        salience=275,
     )
     def rule_service_premium_comfort(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("service-premium-comfort")
@@ -947,7 +911,6 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(
         TravelInput(service_level="economy", budget_rub=MATCH.budget),
         TEST(lambda budget: budget < 80000),
-        salience=274,
     )
     def rule_service_economy_domestic(self, budget: int) -> None:  # noqa: ARG002
         self.register_match("service-economy-domestic")
@@ -964,7 +927,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
         ),
     )
-    @Rule(TravelInput(service_level="standard", travel_type="culture"), salience=273)
+    @Rule(TravelInput(service_level="standard", travel_type="culture"))
     def rule_service_standard_culture(self) -> None:
         self.register_match("service-standard-culture")
 
@@ -980,7 +943,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="eco"),
         ),
     )
-    @Rule(TravelInput(hobby="hiking", travel_type="eco"), salience=272)
+    @Rule(TravelInput(hobby="hiking", travel_type="eco"))
     def rule_hobby_hiking_eco(self) -> None:
         self.register_match("hobby-hiking-eco")
 
@@ -995,7 +958,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="hobby", op="eq", value="food"),
         ),
     )
-    @Rule(TravelInput(hobby="food"), salience=271)
+    @Rule(TravelInput(hobby="food"))
     def rule_hobby_food_gastro(self) -> None:
         self.register_match("hobby-food-gastro")
 
@@ -1010,7 +973,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="hobby", op="eq", value="museum"),
         ),
     )
-    @Rule(TravelInput(hobby="museum"), salience=270)
+    @Rule(TravelInput(hobby="museum"))
     def rule_hobby_museum_city(self) -> None:
         self.register_match("hobby-museum-city")
 
@@ -1026,7 +989,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="relax"),
         ),
     )
-    @Rule(TravelInput(companions="family", travel_type="relax"), salience=260)
+    @Rule(TravelInput(companions="family", travel_type="relax"))
     def rule_family_relax_tour(self) -> None:
         self.register_match("family-relax-tour")
 
@@ -1042,7 +1005,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="active"),
         ),
     )
-    @Rule(TravelInput(companions="friends", travel_type="active"), salience=259)
+    @Rule(TravelInput(companions="friends", travel_type="active"))
     def rule_friends_active_tour(self) -> None:
         self.register_match("friends-active-tour")
 
@@ -1057,7 +1020,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="business"),
         ),
     )
-    @Rule(TravelInput(travel_type="business"), salience=250)
+    @Rule(TravelInput(travel_type="business"))
     def rule_business_general(self) -> None:
         self.register_match("business-general")
 
@@ -1072,7 +1035,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="eco"),
         ),
     )
-    @Rule(TravelInput(travel_type="eco"), salience=249)
+    @Rule(TravelInput(travel_type="eco"))
     def rule_eco_general(self) -> None:
         self.register_match("eco-general")
 
@@ -1087,7 +1050,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="education"),
         ),
     )
-    @Rule(TravelInput(travel_type="education"), salience=248)
+    @Rule(TravelInput(travel_type="education"))
     def rule_education_general(self) -> None:
         self.register_match("education-general")
 
@@ -1102,7 +1065,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="health"),
         ),
     )
-    @Rule(TravelInput(travel_type="health"), salience=247)
+    @Rule(TravelInput(travel_type="health"))
     def rule_health_general(self) -> None:
         self.register_match("health-general")
 
@@ -1117,7 +1080,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
         ),
     )
-    @Rule(TravelInput(travel_type="culture"), salience=246)
+    @Rule(TravelInput(travel_type="culture"))
     def rule_culture_general(self) -> None:
         self.register_match("culture-general")
 
@@ -1132,7 +1095,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="relax"),
         ),
     )
-    @Rule(TravelInput(travel_type="relax"), salience=245)
+    @Rule(TravelInput(travel_type="relax"))
     def rule_relax_general(self) -> None:
         self.register_match("relax-general")
 
@@ -1147,7 +1110,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="active"),
         ),
     )
-    @Rule(TravelInput(travel_type="active"), salience=244)
+    @Rule(TravelInput(travel_type="active"))
     def rule_active_general(self) -> None:
         self.register_match("active-general")
 
@@ -1162,7 +1125,7 @@ class _TravelExpertEngine(KnowledgeEngine):
             ConditionSpec(slot="travel_type", op="eq", value="mixed"),
         ),
     )
-    @Rule(TravelInput(travel_type="mixed"), salience=243)
+    @Rule(TravelInput(travel_type="mixed"))
     def rule_mixed_general(self) -> None:
         self.register_match("mixed-general")
 
@@ -1230,101 +1193,109 @@ class TravelRuleEngine:
         normalized = self._normalize_facts(known_facts)
         metadata = self.engine.rule_metadata
         steps: list[dict[str, Any]] = []
+        self._append_backward_step(steps, depth=0, step="prove-goal", goal=goal)
+        matched_rules: list[str] = []
 
         if goal == "*":
             candidates = _sorted_rules(metadata)
-            steps.append(
-                {
-                    "pass": 1,
-                    "step": "select-candidates",
-                    "goal": goal,
-                    "candidates": [item.name for item in candidates],
-                }
+            self._append_backward_step(
+                steps,
+                depth=0,
+                step="select-rules",
+                goal=goal,
+                candidates=[item.name for item in candidates],
             )
         else:
             candidate = metadata.get(goal)
             if candidate is None:
+                self._append_backward_step(
+                    steps,
+                    depth=0,
+                    step="goal-not-found",
+                    goal=goal,
+                )
                 elapsed_ms = (perf_counter() - started) * 1000
                 result = BackwardResult(
                     goal=goal,
                     achieved=False,
                     selected_rule=None,
+                    matched_rules=(),
                     recommendation=None,
                     elapsed_ms=round(elapsed_ms, 3),
-                    passes=1,
-                    steps=(
-                        {
-                            "pass": 1,
-                            "step": "goal-not-found",
-                            "goal": goal,
-                        },
-                    ),
+                    passes=max(step["pass"] for step in steps),
+                    steps=tuple(steps),
+                    proof={
+                        "type": "goal",
+                        "goal": goal,
+                        "achieved": False,
+                        "reason": "goal-not-found",
+                    },
                 )
                 if explain:
                     return result
                 return False
-
             candidates = [candidate]
-            steps.append(
-                {
-                    "pass": 1,
-                    "step": "select-goal",
-                    "goal": goal,
-                    "candidate": candidate.name,
-                }
+            self._append_backward_step(
+                steps,
+                depth=0,
+                step="select-rules",
+                goal=goal,
+                candidates=[candidate.name],
             )
 
         selected: RuleMetadata | None = None
+        candidate_proofs: list[dict[str, Any]] = []
+
         for candidate in candidates:
-            candidate_ok = True
-            for condition in candidate.conditions:
-                condition_ok = _condition_is_satisfied(condition, normalized)
-                steps.append(
-                    {
-                        "pass": 2,
-                        "step": "check-condition",
-                        "rule": candidate.name,
-                        "slot": condition.slot,
-                        "operator": condition.op,
-                        "expected": condition.value,
-                        "actual": normalized.get(condition.slot),
-                        "matched": condition_ok,
-                    }
-                )
-                if not condition_ok:
-                    candidate_ok = False
-            if candidate_ok:
+            achieved_candidate, candidate_proof = self._build_backward_rule_proof(
+                candidate=candidate,
+                known_facts=normalized,
+                steps=steps,
+                depth=1,
+            )
+            candidate_proofs.append(candidate_proof)
+            if achieved_candidate:
+                matched_rules.append(candidate.name)
                 if selected is None:
                     selected = candidate
-                    steps.append(
-                        {
-                            "pass": 2,
-                            "step": "goal-achieved",
-                            "rule": candidate.name,
-                        }
+                    self._append_backward_step(
+                        steps,
+                        depth=0,
+                        step="goal-proved",
+                        goal=goal,
+                        selected_rule=candidate.name,
                     )
                     if goal != "*":
                         break
                 else:
-                    steps.append(
-                        {
-                            "pass": 2,
-                            "step": "candidate-also-matched",
-                            "rule": candidate.name,
-                            "selected_rule": selected.name,
-                        }
+                    self._append_backward_step(
+                        steps,
+                        depth=0,
+                        step="candidate-also-matched",
+                        goal=goal,
+                        rule=candidate.name,
+                        selected_rule=selected.name,
                     )
 
         achieved = selected is not None
         if selected is None and goal in {"*", DEFAULT_RULE_NAME}:
             selected = metadata[DEFAULT_RULE_NAME]
             achieved = True
-            steps.append(
-                {
-                    "pass": 2,
-                    "step": "fallback-default",
-                    "rule": DEFAULT_RULE_NAME,
-                }
+            matched_rules.append(DEFAULT_RULE_NAME)
+            self._append_backward_step(
+                steps,
+                depth=0,
+                step="fallback-default",
+                goal=goal,
+                rule=DEFAULT_RULE_NAME,
+            )
+
+        if not achieved and goal not in {"*", DEFAULT_RULE_NAME}:
+            self._append_backward_step(
+                steps,
+                depth=0,
+                step="goal-failed",
+                goal=goal,
             )
 
         elapsed_ms = (perf_counter() - started) * 1000
@@ -1332,16 +1303,162 @@ class TravelRuleEngine:
             goal=goal,
             achieved=achieved,
             selected_rule=selected.name if selected else None,
+            matched_rules=tuple(matched_rules),
             recommendation=selected.recommendation if selected else None,
             elapsed_ms=round(elapsed_ms, 3),
-            passes=2,
+            passes=max(step["pass"] for step in steps),
             steps=tuple(steps),
+            proof={
+                "type": "goal",
+                "goal": goal,
+                "achieved": achieved,
+                "selected_rule": selected.name if selected else None,
+                "matched_rules": list(matched_rules),
+                "candidates": candidate_proofs,
+            },
         )
 
         if explain:
             return result
 
         return achieved
+
+    def _append_backward_step(
+        self,
+        steps: list[dict[str, Any]],
+        *,
+        depth: int,
+        step: str,
+        **payload: Any,
+    ) -> None:
+        steps.append(
+            {
+                "pass": depth + 1,
+                "depth": depth,
+                "step": step,
+                **payload,
+            }
+        )
+
+    def _build_backward_rule_proof(
+        self,
+        *,
+        candidate: RuleMetadata,
+        known_facts: Mapping[str, Any],
+        steps: list[dict[str, Any]],
+        depth: int,
+    ) -> tuple[bool, dict[str, Any]]:
+        self._append_backward_step(
+            steps,
+            depth=depth,
+            step="try-rule",
+            rule=candidate.name,
+            priority=candidate.priority,
+        )
+
+        condition_proofs: list[dict[str, Any]] = []
+        candidate_ok = True
+        for condition in candidate.conditions:
+            condition_ok, condition_proof = self._build_backward_condition_proof(
+                condition=condition,
+                known_facts=known_facts,
+                steps=steps,
+                depth=depth + 1,
+                rule_name=candidate.name,
+            )
+            condition_proofs.append(condition_proof)
+            if not condition_ok:
+                candidate_ok = False
+
+        self._append_backward_step(
+            steps,
+            depth=depth,
+            step="rule-proved" if candidate_ok else "rule-failed",
+            rule=candidate.name,
+        )
+        return (
+            candidate_ok,
+            {
+                "type": "rule",
+                "rule": candidate.name,
+                "priority": candidate.priority,
+                "achieved": candidate_ok,
+                "conditions": condition_proofs,
+            },
+        )
+
+    def _build_backward_condition_proof(
+        self,
+        *,
+        condition: ConditionSpec,
+        known_facts: Mapping[str, Any],
+        steps: list[dict[str, Any]],
+        depth: int,
+        rule_name: str,
+    ) -> tuple[bool, dict[str, Any]]:
+        self._append_backward_step(
+            steps,
+            depth=depth,
+            step="prove-condition",
+            rule=rule_name,
+            slot=condition.slot,
+            operator=condition.op,
+            expected=condition.value,
+        )
+
+        actual = known_facts.get(condition.slot)
+        if actual is None:
+            self._append_backward_step(
+                steps,
+                depth=depth,
+                step="condition-failed",
+                rule=rule_name,
+                slot=condition.slot,
+                operator=condition.op,
+                expected=condition.value,
+                actual=None,
+                reason="missing-fact",
+            )
+            return (
+                False,
+                {
+                    "type": "condition",
+                    "rule": rule_name,
+                    "slot": condition.slot,
+                    "operator": condition.op,
+                    "expected": condition.value,
+                    "actual": None,
+                    "achieved": False,
+                    "source": "facts",
+                    "reason": "missing-fact",
+                },
+            )
+
+        condition_ok = _apply_operator(condition.op, actual, condition.value)
+        self._append_backward_step(
+            steps,
+            depth=depth,
+            step="condition-from-facts" if condition_ok else "condition-failed",
+            rule=rule_name,
+            slot=condition.slot,
+            operator=condition.op,
+            expected=condition.value,
+            actual=actual,
+            matched=condition_ok,
+        )
+        return (
+            condition_ok,
+            {
+                "type": "condition",
+                "rule": rule_name,
+                "slot": condition.slot,
+                "operator": condition.op,
+                "expected": condition.value,
+                "actual": actual,
+                "achieved": condition_ok,
+                "source": "facts",
+            },
+        )
 
     def _build_forward_steps(
         self,

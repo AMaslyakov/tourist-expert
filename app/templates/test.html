@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тест вывода правил</title>
+  <style>
+    :root {
+      --bg: #f5f8fb;
+      --card: #ffffff;
+      --text: #1d2a38;
+      --muted: #5d6d80;
+      --border: #d8e1eb;
+      --accent: #0c7281;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top right, #dff4f6, var(--bg) 40%);
+    }
+
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    h1, h2 {
+      margin: 0 0 10px 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    ul {
+      margin: 8px 0 0 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 4px 0;
+      word-break: break-word;
+    }
+
+    code {
+      background: #f2f5f8;
+      border: 1px solid #e0e8ef;
+      border-radius: 6px;
+      padding: 1px 5px;
+    }
+
+    .run-button {
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <section class="card">
+      <h1>Тестовый запуск продукционной системы</h1>
+      <p>Маршрут: <code>/test</code>. Здесь выполняется прямой и обратный вывод на одном тестовом наборе фактов.</p>
+      <form method="get" action="{{ url_for('test_route') }}" style="margin-top: 12px;">
+        <input type="hidden" name="run_tests" value="1">
+        <button class="run-button" type="submit">Запустить тесты</button>
+      </form>
+    </section>
+
+    {% if engine_error %}
+    <section class="card">
+      <h2>Ошибка инициализации</h2>
+      <p>Экземпляр движка правил недоступен в <code>app.extensions["expert_engine"]</code>.</p>
+    </section>
+    {% elif not run_tests %}
+    <section class="card">
+      <h2>Ожидание запуска</h2>
+      <p>Нажмите кнопку <code>Запустить тесты</code>, чтобы увидеть цепочки прямого и обратного вывода.</p>
+    </section>
+    {% else %}
+    <section class="card">
+      <h2>Тестовые факты</h2>
+      <ul>
+        {% for fact_name, fact_value in sample_facts.items() %}
+        <li><code>{{ fact_name }}</code>: {{ fact_value }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Прямой вывод</h2>
+        <p>Выбрано правило: <code>{{ forward_result.selected_rule }}</code></p>
+        <p>Сработало правил: {{ forward_result.matched_rules|length }}</p>
+        <ul>
+          {% for rule_name in forward_result.matched_rules %}
+          <li><code>{{ rule_name }}</code></li>
+          {% else %}
+          <li><code>{{ default_rule_name }}</code></li>
+          {% endfor %}
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Обратный вывод</h2>
+        <p>Цель: <code>{{ backward_result.goal }}</code></p>
+        <p>Выбрано правило: <code>{{ backward_result.selected_rule }}</code></p>
+        <p>Сработало правил: {{ backward_result.matched_rules|length }}</p>
+        <ul>
+          {% for rule_name in backward_result.matched_rules %}
+          <li><code>{{ rule_name }}</code></li>
+          {% else %}
+          <li><code>{{ default_rule_name }}</code></li>
+          {% endfor %}
+        </ul>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Цепочка шагов обратного вывода</h2>
+      <p>Всего шагов: {{ backward_steps|length }}, проходов: {{ backward_result.passes }}</p>
+      <ol>
+        {% for step in backward_steps %}
+        <li>
+          {% if step.step == "prove-goal" %}
+          Начинаем доказательство цели <code>{{ step.goal }}</code>.
+          {% elif step.step == "select-rules" %}
+          Подбираем правила для цели <code>{{ step.goal }}</code>: {{ step.candidates|join(", ") }}.
+          {% elif step.step == "try-rule" %}
+          Пробуем правило <code>{{ step.rule }}</code> (priority={{ step.priority }}).
+          {% elif step.step == "prove-condition" %}
+          Проверяем подцель: <code>{{ step.slot }} {{ step.operator }} {{ step.expected }}</code> для правила <code>{{ step.rule }}</code>.
+          {% elif step.step == "condition-from-facts" %}
+          Подцель подтверждена фактами: <code>{{ step.slot }}</code> = <code>{{ step.actual }}</code>.
+          {% elif step.step == "condition-failed" %}
+          Подцель не доказана: <code>{{ step.slot }} {{ step.operator }} {{ step.expected }}</code>, фактическое значение <code>{{ step.actual }}</code>.
+          {% elif step.step == "rule-proved" %}
+          Правило <code>{{ step.rule }}</code> доказано.
+          {% elif step.step == "rule-failed" %}
+          Правило <code>{{ step.rule }}</code> не доказано.
+          {% elif step.step == "goal-proved" %}
+          Цель <code>{{ step.goal }}</code> достигнута. Выбрано правило <code>{{ step.selected_rule }}</code>.
+          {% elif step.step == "candidate-also-matched" %}
+          Правило <code>{{ step.rule }}</code> тоже доказано, но по приоритету остаётся <code>{{ step.selected_rule }}</code>.
+          {% elif step.step == "fallback-default" %}
+          Переход к правилу по умолчанию <code>{{ step.rule }}</code>.
+          {% elif step.step == "goal-failed" %}
+          Цель <code>{{ step.goal }}</code> не достигнута.
+          {% elif step.step == "goal-not-found" %}
+          Цель <code>{{ step.goal }}</code> отсутствует в базе правил.
+          {% else %}
+          Шаг <code>{{ step.step }}</code>.
+          {% endif %}
+          <span style="color: var(--muted);">[глубина: {{ step.depth }}, проход: {{ step["pass"] }}]</span>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Цепочки для правил (обратный вывод)</h2>
+      <ul>
+        {% for chain in rule_chains %}
+        <li>
+          <code>{{ chain.rule }}</code>:
+          {% if chain.achieved %}доказано{% else %}не доказано{% endif %}
+          <ul>
+            {% for condition in chain.conditions %}
+            <li>
+              <code>{{ condition.slot }} {{ condition.operator }} {{ condition.expected }}</code>
+              {% if condition.achieved %}
+              [ok] (actual={{ condition.actual }})
+              {% else %}
+              [fail] (actual={{ condition.actual }})
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Все зарегистрированные правила</h2>
+      <p>Всего правил (без default): {{ rules_count }}</p>
+      <ul>
+        {% for rule in all_rules %}
+        <li><code>{{ rule.name }}</code> (priority={{ rule.priority }})</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>
