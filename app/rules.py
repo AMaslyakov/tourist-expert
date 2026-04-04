@@ -149,8 +149,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="warm-relax-premium",
         priority=340,
         recommendation=(
-            "Рекомендуется пляжный отдых в теплой стране с повышенным уровнем "
-            "комфорта."
+            "Пляжный отдых в теплой стране с повышенным уровнем комфорта: "
+            "например, Мальдивы, Сейшелы, ОАЭ"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="warm"),
@@ -169,8 +169,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="summer-family-beach",
         priority=338,
         recommendation=(
-            "Рекомендуется семейный летний пляжный отдых с мягким графиком и "
-            "короткими переездами."
+            "Семейный летний пляжный отдых с лёгким графиком и короткими переездами: "
+            "например, Турция, Болгария, Крым"
         ),
         conditions=(
             ConditionSpec(slot="season", op="eq", value="summer"),
@@ -186,8 +186,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="winter-active-ski",
         priority=337,
         recommendation=(
-            "Рекомендуется зимний активный тур с горнолыжным курортом или "
-            "снежными маршрутами."
+            "Зимний активный тур с горнолыжным курортом или снежными маршрутами: "
+            "например, Альпы, Хибины, Шерегеш"
         ),
         conditions=(
             ConditionSpec(slot="season", op="eq", value="winter"),
@@ -203,8 +203,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="family-health-insured",
         priority=336,
         recommendation=(
-            "Рекомендуется семейная оздоровительная программа в санаторном "
-            "формате с оформленной страховкой."
+            "Семейная оздоровительная программа в санаторном формате: "
+            "например, Кавминводы, Белокуриха, санатории Крыма"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="family"),
@@ -220,8 +220,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="business-premium-city",
         priority=335,
         recommendation=(
-            "Рекомендуется деловая поездка в крупный город с центральным "
-            "отелем и премиальным уровнем сервиса."
+            "Деловая поездка в крупный город с центральным отелем и премиальным сервисом: "
+            "например, Москва, Шанхай, Сингапур"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="business"),
@@ -244,8 +244,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="visa-free-family-sea",
         priority=334,
         recommendation=(
-            "Рекомендуется теплое семейное направление без визы с простой "
-            "логистикой и морским отдыхом."
+            "Теплое семейное направление без визы с простой логистикой и морским отдыхом: "
+            "например, Сочи, Китай"
         ),
         conditions=(
             ConditionSpec(slot="visa_mode", op="eq", value="visa_free_only"),
@@ -267,8 +267,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="eco-spring-hike",
         priority=333,
         recommendation=(
-            "Рекомендуется весенний экотур с пешими маршрутами, национальными "
-            "парками и умеренной нагрузкой."
+            "Весенний экотур с пешими маршрутами, национальными парками и умеренной нагрузкой: "
+            "например, Сочи, Алтай, Карелия"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="eco"),
@@ -284,8 +284,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="education-food-workshop",
         priority=332,
         recommendation=(
-            "Рекомендуется обучающий гастрономический тур с мастер-классами, "
-            "дегустациями и местной кухней."
+            "Обучающий гастрономический тур с мастер-классами и дегустациями: "
+            "например, Италия, Франция, Грузия"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="education"),
@@ -300,8 +300,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="dance-culture-festival",
         priority=331,
         recommendation=(
-            "Рекомендуется культурная поездка на фестивали и танцевальные "
-            "мероприятия."
+            "Культурная поездка на фестивали и танцевальные мероприятия: "
+            "например, Аргентина (танго), Испания (фламенко), Бразилия (самба)"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="dance"),
@@ -316,8 +316,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="museum-culture-grand-tour",
         priority=330,
         recommendation=(
-            "Рекомендуется насыщенный музейно-экскурсионный маршрут по "
-            "нескольким городам."
+            "Насыщенный музейно-экскурсионный маршрут по нескольким городам: "
+            "например, Париж, Версаль, Санкт-Петербург, Рим"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="museum"),
@@ -336,8 +336,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="hiking-winter-adventure",
         priority=329,
         recommendation=(
-            "Рекомендуется зимний приключенческий маршрут с треккингом и "
-            "сопровождением инструкторов."
+            "Зимний приключенческий маршрут с треккингом и сопровождением инструкторов: "
+            "например, Хибины, Камчатка, Урал"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="hiking"),
@@ -353,8 +353,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="couple-autumn-culture",
         priority=328,
         recommendation=(
-            "Рекомендуется романтический культурный city-break для пары в "
-            "бархатный сезон."
+            "Романтический культурный тур по городам для пары в бархатный сезон: "
+            "например, Прага, Будапешт, Вена"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="couple"),
@@ -372,8 +372,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="friends-winter-sport",
         priority=327,
         recommendation=(
-            "Рекомендуется активный зимний тур для компании друзей со спортом "
-            "и насыщенным вечерним досугом."
+            "Активный зимний тур для компании друзей со спортом и насыщенным досугом: "
+            "например, Шерегеш, Домбай, Красноярские столбы"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="friends"),
@@ -391,8 +391,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="solo-active-adventure",
         priority=326,
         recommendation=(
-            "Рекомендуется solo-путешествие с активной программой и "
-            "присоединением к организованным маршрутам."
+            "Путешествие с активной программой и присоединением к организованным маршрутам: "
+            "например, Килиманджаро, Алтай, Карелия"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="solo"),
@@ -411,8 +411,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="no-insurance-active-safe",
         priority=325,
         recommendation=(
-            "Без страховки лучше выбрать безопасный активный маршрут внутри "
-            "страны без экстремальных нагрузок."
+            "Безопасный активный маршрут внутри страны без экстремальных нагрузок: "
+            "например, Подмосковье, Ленобласть, Карелия"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="active"),
@@ -427,8 +427,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="no-insurance-cold-safe",
         priority=324,
         recommendation=(
-            "Без страховки и при выборе холодного климата лучше ограничиться "
-            "короткой спокойной поездкой без удаленных локаций."
+            "Короткая спокойная поездка без удаленных локаций: "
+            "например, Кижи, Великий Устюг, Суздаль"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="cold"),
@@ -443,8 +443,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="premium-visa-ready-relax",
         priority=323,
         recommendation=(
-            "Рекомендуется комфортный зарубежный отпуск: вы готовы к визе и "
-            "ориентированы на высокий сервис."
+            "Комфортный зарубежный отпуск с визой и высоким сервисом: "
+            "например, Шри-Ланка, Маврикий, Италия, Франция"
         ),
         conditions=(
             ConditionSpec(slot="visa_mode", op="eq", value="visa_ready"),
@@ -466,8 +466,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="active-short-budget",
         priority=310,
         recommendation=(
-            "Рекомендуется активный короткий тур по России или соседним "
-            "направлениям."
+            "Активный короткий тур по России или соседним направлениям: "
+            "например, Алтай, Адыгея, Карелия, Урал"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="active"),
@@ -486,8 +486,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="family-mild-climate",
         priority=305,
         recommendation=(
-            "Рекомендуется семейный отдых в умеренном климате с короткими "
-            "переездами."
+            "Семейный отдых в умеренном климате с короткими переездами: "
+            "например, Суздаль, Казань, Псков"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="family"),
@@ -502,8 +502,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="budget-weekend-domestic",
         priority=295,
         recommendation=(
-            "Рекомендуется недорогая поездка на выходные по России с простой "
-            "логистикой."
+            "Недорогая поездка на выходные по России с простой логистикой: "
+            "например, Псков, Калуга, Ярославль"
         ),
         conditions=(
             ConditionSpec(slot="budget_rub", op="lt", value=50000),
@@ -521,8 +521,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="culture-short-citybreak",
         priority=294,
         recommendation=(
-            "Рекомендуется короткий культурный city-break с музеями, "
-            "экскурсиями и вечерними прогулками."
+            "Короткий культурный тур по городам с музеями, экскурсиями и вечерними прогулками: "
+            "например, Казань, Калининград, Нижний Новгород"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
@@ -540,8 +540,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="relax-medium-resort",
         priority=293,
         recommendation=(
-            "Рекомендуется стандартный курортный отдых средней длительности с "
-            "понятным бюджетом."
+            "Стандартный курортный отдых средней длительности: "
+            "например, Анапа, Геленджик, Южный берег Крыма"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="relax"),
@@ -562,8 +562,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="health-short-retreat",
         priority=292,
         recommendation=(
-            "Рекомендуется короткая оздоровительная поездка с восстановительным "
-            "режимом и спокойным расписанием."
+            "Короткая оздоровительная поездка с восстановительным режимом: "
+            "например, Кисловодск, Ессентуки, санатории Подмосковья"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="health"),
@@ -581,8 +581,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="business-short-standard",
         priority=291,
         recommendation=(
-            "Рекомендуется короткая деловая поездка с четким графиком и "
-            "удобным размещением."
+            "Короткая деловая поездка с четким графиком и удобным размещением: "
+            "например, Минск, Екатеринбург, Ростов-на-Дону"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="business"),
@@ -600,8 +600,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="eco-budget-trail",
         priority=290,
         recommendation=(
-            "Рекомендуется бюджетный экотур с природными маршрутами, базовой "
-            "инфраструктурой и упором на впечатления."
+            "Бюджетный экотур с природными маршрутами и базовой инфраструктурой: "
+            "например, Воронежский заповедник, Калужские засеки, Угра"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="eco"),
@@ -619,8 +619,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="mixed-week-combo",
         priority=289,
         recommendation=(
-            "Рекомендуется комбинированный тур на неделю: часть программы "
-            "спокойная, часть активная или экскурсионная."
+            "Комбинированный тур на неделю: часть программы спокойная, часть активная или экскурсионная: "
+            "например, Сочи, Крым, Алтай"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="mixed"),
@@ -639,8 +639,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="long-culture-grand-tour",
         priority=288,
         recommendation=(
-            "Рекомендуется длинный экскурсионный маршрут по нескольким "
-            "городам с насыщенной программой."
+            "Длинный экскурсионный маршрут по нескольким городам с насыщенной программой: "
+            "например, Золотое кольцо, Узбекистан, Европа на поезде"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
@@ -659,8 +659,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="long-active-expedition",
         priority=287,
         recommendation=(
-            "Рекомендуется длительное активное путешествие или экспедиционный "
-            "маршрут с хорошим запасом бюджета."
+            "Активное путешествие или экспедиционный маршрут: "
+            "например, Камчатка, Байкал, Горный Алтай"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="active"),
@@ -679,8 +679,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="couple-relax-premium",
         priority=286,
         recommendation=(
-            "Рекомендуется премиальный романтический отдых для пары с акцентом "
-            "на комфорт и приватность."
+            "Премиальный романтический отдых для пары с акцентом на комфорт и приватность: "
+            "например, Баку, Мальдивы, Шри-Ланка"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="couple"),
@@ -698,8 +698,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="friends-budget-roadtrip",
         priority=285,
         recommendation=(
-            "Рекомендуется бюджетный road-trip или насыщенный маршрут для "
-            "компании друзей."
+            "Бюджетное дорожное путешествие или насыщенный маршрут для компании друзей: "
+            "например, Золотое кольцо, Крым на машине, Кавказ"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="friends"),
@@ -717,8 +717,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="family-culture-schoolbreak",
         priority=284,
         recommendation=(
-            "Рекомендуется короткая семейная культурная поездка на каникулы с "
-            "понятной программой для детей и взрослых."
+            "Короткая семейная культурная поездка на неделю: "
+            "например, Москва, Санкт-Петербург, Казань"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="family"),
@@ -737,7 +737,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="warm-summer-beach",
         priority=283,
         recommendation=(
-            "Рекомендуется летний морской отдых в теплом климате."
+            "Летний морской отдых в теплом климате: "
+            "например, Средиземноморье, Турция, Анапа"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="warm"),
@@ -752,8 +753,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="cold-winter-relax",
         priority=282,
         recommendation=(
-            "Рекомендуется спокойный зимний отдых в холодном климате: спа, "
-            "термальные комплексы или северные отели."
+            "Спокойный зимний отдых в холодном климате: спа, термы или северные отели: "
+            "например, Хибины, Карелия, Лапландия"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="cold"),
@@ -769,8 +770,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="mild-spring-city",
         priority=281,
         recommendation=(
-            "Рекомендуется весенний маршрут в умеренном климате: прогулки, "
-            "экскурсии и легкая городская программа."
+            "Весенний маршрут в умеренном климате: прогулки, экскурсии и легкая городская программа: "
+            "например, Будапешт, Прага, Калининград"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="mild"),
@@ -785,8 +786,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="warm-autumn-gastro",
         priority=280,
         recommendation=(
-            "Рекомендуется теплый осенний гастрономический тур с рынками, "
-            "ресторанами и локальными дегустациями."
+            "Теплый осенний гастрономический тур с рынками и локальными дегустациями: "
+            "например, Италия, Грузия, Турция"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="warm"),
@@ -802,8 +803,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="cold-short-culture",
         priority=279,
         recommendation=(
-            "Рекомендуется короткая культурная поездка в холодный сезон без "
-            "сложной логистики и перегрузки."
+            "Короткая культурная поездка в холодный сезон без сложной логистики: "
+            "например, Архангельск, Псков, Великий Новгород"
         ),
         conditions=(
             ConditionSpec(slot="climate", op="eq", value="cold"),
@@ -822,8 +823,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="visa-free-short-trip",
         priority=278,
         recommendation=(
-            "Рекомендуется короткое безвизовое направление, чтобы не тратить "
-            "время на подготовку документов."
+            "Короткое безвизовое направление, чтобы не тратить время на документы: "
+            "например, Китай, Армения, Беларусь"
         ),
         conditions=(
             ConditionSpec(slot="visa_mode", op="eq", value="visa_free_only"),
@@ -841,8 +842,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="visa-free-business-quick",
         priority=277,
         recommendation=(
-            "Рекомендуется быстрая безвизовая деловая поездка с минимальными "
-            "организационными рисками."
+            "Быстрая безвизовая деловая поездка с минимальными рисками: "
+            "например, Ереван, Белград, Тбилиси"
         ),
         conditions=(
             ConditionSpec(slot="visa_mode", op="eq", value="visa_free_only"),
@@ -865,8 +866,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="insurance-health-therapy",
         priority=276,
         recommendation=(
-            "Рекомендуется оздоровительная поездка с медицинским блоком: "
-            "наличие страховки делает такой формат безопаснее."
+            "Оздоровительная поездка с медицинским блоком: страховка делает формат безопаснее: "
+            "например, Мертвое море, Карловы Вары, Кисловодск"
         ),
         conditions=(
             ConditionSpec(slot="insurance", op="eq", value="yes"),
@@ -881,8 +882,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="service-premium-comfort",
         priority=275,
         recommendation=(
-            "Рекомендуется комфортная поездка с премиальным сервисом и "
-            "повышенным уровнем удобства."
+            "Комфортная поездка с премиальным сервисом и повышенным уровнем удобства: "
+            "например, Дубай, Сингапур, Майами"
         ),
         conditions=(
             ConditionSpec(slot="service_level", op="eq", value="premium"),
@@ -900,8 +901,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="service-economy-domestic",
         priority=274,
         recommendation=(
-            "Рекомендуется экономичный маршрут внутри страны с упором на цену "
-            "и базовый набор услуг."
+            "Экономичный маршрут внутри страны с упором на цену и базовый набор услуг: "
+            "например, частный сектор в Анапе, хостелы в Золотом кольце"
         ),
         conditions=(
             ConditionSpec(slot="service_level", op="eq", value="economy"),
@@ -919,8 +920,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="service-standard-culture",
         priority=273,
         recommendation=(
-            "Рекомендуется культурный тур стандартного уровня: без излишней "
-            "роскоши, но с комфортным размещением."
+            "Культурный тур стандартного уровня: без излишней роскоши, но с комфортным размещением: "
+            "например, туры по Золотому кольцу, Псков, Рязань"
         ),
         conditions=(
             ConditionSpec(slot="service_level", op="eq", value="standard"),
@@ -935,8 +936,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="hobby-hiking-eco",
         priority=272,
         recommendation=(
-            "Рекомендуется природный маршрут с треккингом, смотровыми точками "
-            "и умеренной физической нагрузкой."
+            "Природный маршрут с треккингом и умеренной физической нагрузкой: "
+            "например, экотропы Сочи, Алтай, Карелия"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="hiking"),
@@ -951,8 +952,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="hobby-food-gastro",
         priority=271,
         recommendation=(
-            "Рекомендуется гастрономическая поездка с рынками, дегустациями и "
-            "локальной кухней."
+            "Гастрономическая поездка с рынками, дегустациями и локальной кухней: "
+            "например, Италия, Франция, Грузия"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="food"),
@@ -966,8 +967,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="hobby-museum-city",
         priority=270,
         recommendation=(
-            "Рекомендуется городская экскурсионная поездка с музеями, "
-            "историческими центрами и выставками."
+            "Городская экскурсионная поездка с музеями и историческими центрами: "
+            "например, Санкт-Петербург, Москва, Рим"
         ),
         conditions=(
             ConditionSpec(slot="hobby", op="eq", value="museum"),
@@ -981,8 +982,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="family-relax-tour",
         priority=260,
         recommendation=(
-            "Рекомендуется спокойный семейный отдых с понятной логистикой и "
-            "инфраструктурой для взрослых и детей."
+            "Спокойный семейный отдых с понятной логистикой: "
+            "например, Анапа, Суздаль, Карелия"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="family"),
@@ -997,8 +998,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="friends-active-tour",
         priority=259,
         recommendation=(
-            "Рекомендуется активная поездка для друзей: спорт, прогулки и "
-            "общая насыщенная программа."
+            "Активная поездка для друзей: спорт, прогулки и насыщенная программа: "
+            "например, Алтай, Карелия, Шерегеш"
         ),
         conditions=(
             ConditionSpec(slot="companions", op="eq", value="friends"),
@@ -1013,8 +1014,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="business-general",
         priority=250,
         recommendation=(
-            "Рекомендуется деловой формат поездки с проживанием в удобной "
-            "локации и запасом времени под встречи."
+            "Деловой формат поездки с проживанием в удобной локации: "
+            "например, Москва, Санкт-Петербург, Екатеринбург"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="business"),
@@ -1028,8 +1029,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="eco-general",
         priority=249,
         recommendation=(
-            "Рекомендуется экологический тур с природными локациями и "
-            "бережным режимом посещения."
+            "Экологический тур с природными локациями: "
+            "например, Алтай, Карелия, Байкал"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="eco"),
@@ -1043,8 +1044,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="education-general",
         priority=248,
         recommendation=(
-            "Рекомендуется обучающий тур с курсами, мастер-классами или "
-            "тематической программой."
+            "Обучающий тур с курсами или мастер-классами: "
+            "например, Италия (кулинария), Франция (язык), Индия (йога)"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="education"),
@@ -1058,8 +1059,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="health-general",
         priority=247,
         recommendation=(
-            "Рекомендуется оздоровительный отдых с размеренным темпом и "
-            "восстановительными процедурами."
+            "Оздоровительный отдых с восстановительными процедурами: "
+            "например, Кисловодск, Мертвое море, Карловы Вары"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="health"),
@@ -1073,8 +1074,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="culture-general",
         priority=246,
         recommendation=(
-            "Рекомендуется культурно-познавательная поездка с экскурсиями и "
-            "городской программой."
+            "Культурно-познавательная поездка с экскурсиями: "
+            "например, Золотое кольцо, Санкт-Петербург, Прага"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="culture"),
@@ -1088,8 +1089,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="relax-general",
         priority=245,
         recommendation=(
-            "Рекомендуется спокойный отдых с комфортным размещением и "
-            "минимумом перегрузки в программе."
+            "Спокойный отдых с комфортным размещением: "
+            "например, Анапа, Геленджик, Крым"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="relax"),
@@ -1103,8 +1104,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="active-general",
         priority=244,
         recommendation=(
-            "Рекомендуется активный формат поездки с походами, спортом или "
-            "движением по нескольким точкам маршрута."
+            "Активный формат поездки с походами или спортом: "
+            "например, Алтай, Карелия, Хибины"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="active"),
@@ -1118,8 +1119,8 @@ class _TravelExpertEngine(KnowledgeEngine):
         name="mixed-general",
         priority=243,
         recommendation=(
-            "Рекомендуется смешанный формат путешествия: баланс отдыха, "
-            "экскурсий и умеренной активности."
+            "Смешанный формат путешествия: баланс отдыха и экскурсий: "
+            "например, Сочи, Крым, Казань"
         ),
         conditions=(
             ConditionSpec(slot="travel_type", op="eq", value="mixed"),
@@ -1128,6 +1129,369 @@ class _TravelExpertEngine(KnowledgeEngine):
     @Rule(TravelInput(travel_type="mixed"))
     def rule_mixed_general(self) -> None:
         self.register_match("mixed-general")
+
+    # ========== НОВЫЕ ПРАВИЛА (44-55) ==========
+
+    @_register_rule(
+        name="summer-active-family",
+        priority=320,
+        recommendation=(
+            "Активный семейный отдых летом в тёплом климате: аквапарки, батуты, прогулки: "
+            "например, Сочи, Турция, Кипр"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="warm"),
+            ConditionSpec(slot="season", op="eq", value="summer"),
+            ConditionSpec(slot="travel_type", op="eq", value="active"),
+            ConditionSpec(slot="companions", op="eq", value="family"),
+        ),
+    )
+    @Rule(
+        TravelInput(climate="warm", season="summer", travel_type="active", companions="family"),
+    )
+    def rule_summer_active_family(self) -> None:
+        self.register_match("summer-active-family")
+
+    @_register_rule(
+        name="winter-culture-couple",
+        priority=319,
+        recommendation=(
+            "Романтический зимний тур с музеями и уютными кафе: "
+            "например, Санкт-Петербург, Прага, Вена"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="cold"),
+            ConditionSpec(slot="season", op="eq", value="winter"),
+            ConditionSpec(slot="travel_type", op="eq", value="culture"),
+            ConditionSpec(slot="companions", op="eq", value="couple"),
+        ),
+    )
+    @Rule(
+        TravelInput(climate="cold", season="winter", travel_type="culture", companions="couple"),
+    )
+    def rule_winter_culture_couple(self) -> None:
+        self.register_match("winter-culture-couple")
+
+    @_register_rule(
+        name="warm-eco-solo",
+        priority=318,
+        recommendation=(
+            "Тёплый эко-маршрут для одного: трекинг, леса, вулканы: "
+            "например, Канарские острова, Мадейра, Тенерифе"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="warm"),
+            ConditionSpec(slot="travel_type", op="eq", value="eco"),
+            ConditionSpec(slot="companions", op="eq", value="solo"),
+            ConditionSpec(slot="hobby", op="eq", value="hiking"),
+        ),
+    )
+    @Rule(
+        TravelInput(climate="warm", travel_type="eco", companions="solo", hobby="hiking"),
+    )
+    def rule_warm_eco_solo(self) -> None:
+        self.register_match("warm-eco-solo")
+
+    @_register_rule(
+        name="cold-adventure-friends",
+        priority=317,
+        recommendation=(
+            "Зимнее приключение с друзьями с высоким бюджетом: "
+            "например, Норвегия (фьорды), Исландия, Аляска"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="cold"),
+            ConditionSpec(slot="travel_type", op="eq", value="active"),
+            ConditionSpec(slot="budget_rub", op="gte", value=120000),
+            ConditionSpec(slot="trip_days", op="gte", value=10),
+            ConditionSpec(slot="companions", op="eq", value="friends"),
+            ConditionSpec(slot="insurance", op="eq", value="yes"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="cold",
+            travel_type="active",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="friends",
+            insurance="yes",
+        ),
+        TEST(lambda budget, days: budget >= 120000 and days >= 10),
+    )
+    def rule_cold_adventure_friends(self, budget: int, days: int) -> None:
+        self.register_match("cold-adventure-friends")
+
+    @_register_rule(
+        name="relax-long-visa",
+        priority=316,
+        recommendation=(
+            "Долгий расслабленный отпуск с визой и высоким сервисом: "
+            "например, Таиланд (Пхукет), Вьетнам (Нячанг), Доминикана"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="warm"),
+            ConditionSpec(slot="travel_type", op="eq", value="relax"),
+            ConditionSpec(slot="budget_rub", op="gte", value=150000),
+            ConditionSpec(slot="trip_days", op="gte", value=14),
+            ConditionSpec(slot="service_level", op="eq", value="premium"),
+            ConditionSpec(slot="visa_mode", op="eq", value="visa_ready"),
+            ConditionSpec(slot="insurance", op="eq", value="yes"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="warm",
+            travel_type="relax",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            service_level="premium",
+            visa_mode="visa_ready",
+            insurance="yes",
+        ),
+        TEST(lambda budget, days: budget >= 150000 and days >= 14),
+    )
+    def rule_relax_long_visa(self, budget: int, days: int) -> None:
+        self.register_match("relax-long-visa")
+
+    @_register_rule(
+        name="culture-budget-solo",
+        priority=315,
+        recommendation=(
+            "Бюджетный музейный тур для одного: недорогое жильё, входные билеты: "
+            "например, Псков, Смоленск, Рязань"
+        ),
+        conditions=(
+            ConditionSpec(slot="travel_type", op="eq", value="culture"),
+            ConditionSpec(slot="budget_rub", op="gte", value=30000),
+            ConditionSpec(slot="budget_rub", op="lt", value=60000),
+            ConditionSpec(slot="trip_days", op="gte", value=4),
+            ConditionSpec(slot="trip_days", op="lte", value=6),
+            ConditionSpec(slot="companions", op="eq", value="solo"),
+            ConditionSpec(slot="service_level", op="eq", value="economy"),
+            ConditionSpec(slot="hobby", op="eq", value="museum"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            travel_type="culture",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="solo",
+            service_level="economy",
+            hobby="museum",
+        ),
+        TEST(lambda budget, days: 30000 <= budget < 60000 and 4 <= days <= 6),
+    )
+    def rule_culture_budget_solo(self, budget: int, days: int) -> None:
+        self.register_match("culture-budget-solo")
+
+    @_register_rule(
+        name="family-roadtrip-mild",
+        priority=314,
+        recommendation=(
+            "Семейное автопутешествие по умеренному климату: "
+            "например, Золотое кольцо, Карелия, Алтай на машине"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="mild"),
+            ConditionSpec(slot="season", op="eq", value="summer"),
+            ConditionSpec(slot="travel_type", op="eq", value="mixed"),
+            ConditionSpec(slot="budget_rub", op="gte", value=50000),
+            ConditionSpec(slot="budget_rub", op="lt", value=90000),
+            ConditionSpec(slot="trip_days", op="gte", value=7),
+            ConditionSpec(slot="trip_days", op="lte", value=9),
+            ConditionSpec(slot="companions", op="eq", value="family"),
+            ConditionSpec(slot="service_level", op="eq", value="economy"),
+            ConditionSpec(slot="insurance", op="eq", value="no"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="mild",
+            season="summer",
+            travel_type="mixed",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="family",
+            service_level="economy",
+            insurance="no",
+        ),
+        TEST(lambda budget, days: 50000 <= budget < 90000 and 7 <= days <= 9),
+    )
+    def rule_family_roadtrip_mild(self, budget: int, days: int) -> None:
+        self.register_match("family-roadtrip-mild")
+
+    @_register_rule(
+        name="health-premium-spring",
+        priority=313,
+        recommendation=(
+            "Весеннее оздоровление для пары с премиум-сервисом: "
+            "например, Карловы Вары, Мертвое море, Италия (термы)"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="mild"),
+            ConditionSpec(slot="season", op="eq", value="spring"),
+            ConditionSpec(slot="travel_type", op="eq", value="health"),
+            ConditionSpec(slot="budget_rub", op="gte", value=100000),
+            ConditionSpec(slot="trip_days", op="gte", value=7),
+            ConditionSpec(slot="trip_days", op="lte", value=10),
+            ConditionSpec(slot="companions", op="eq", value="couple"),
+            ConditionSpec(slot="service_level", op="eq", value="premium"),
+            ConditionSpec(slot="insurance", op="eq", value="yes"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="mild",
+            season="spring",
+            travel_type="health",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="couple",
+            service_level="premium",
+            insurance="yes",
+        ),
+        TEST(lambda budget, days: budget >= 100000 and 7 <= days <= 10),
+    )
+    def rule_health_premium_spring(self, budget: int, days: int) -> None:
+        self.register_match("health-premium-spring")
+
+    @_register_rule(
+        name="active-visa-free-short",
+        priority=312,
+        recommendation=(
+            "Активный безвизовый тур с друзьями: трекинг, рафтинг, горы: "
+            "например, Армения, Грузия, Абхазия"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="warm"),
+            ConditionSpec(slot="travel_type", op="eq", value="active"),
+            ConditionSpec(slot="budget_rub", op="lt", value=80000),
+            ConditionSpec(slot="trip_days", op="gte", value=4),
+            ConditionSpec(slot="trip_days", op="lte", value=7),
+            ConditionSpec(slot="companions", op="eq", value="friends"),
+            ConditionSpec(slot="service_level", op="eq", value="economy"),
+            ConditionSpec(slot="visa_mode", op="eq", value="visa_free_only"),
+            ConditionSpec(slot="insurance", op="eq", value="no"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="warm",
+            travel_type="active",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="friends",
+            service_level="economy",
+            visa_mode="visa_free_only",
+            insurance="no",
+        ),
+        TEST(lambda budget, days: budget < 80000 and 4 <= days <= 7),
+    )
+    def rule_active_visa_free_short(self, budget: int, days: int) -> None:
+        self.register_match("active-visa-free-short")
+
+    @_register_rule(
+        name="business-long-economy",
+        priority=311,
+        recommendation=(
+            "Длительная деловая поездка с минимальными расходами: хостелы, коворкинги, трансферы: "
+            "например, Минск, Казань, Екатеринбург"
+        ),
+        conditions=(
+            ConditionSpec(slot="season", op="eq", value="autumn"),
+            ConditionSpec(slot="travel_type", op="eq", value="business"),
+            ConditionSpec(slot="budget_rub", op="gte", value=50000),
+            ConditionSpec(slot="budget_rub", op="lt", value=80000),
+            ConditionSpec(slot="trip_days", op="gte", value=6),
+            ConditionSpec(slot="trip_days", op="lte", value=10),
+            ConditionSpec(slot="companions", op="eq", value="solo"),
+            ConditionSpec(slot="service_level", op="eq", value="economy"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            season="autumn",
+            travel_type="business",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="solo",
+            service_level="economy",
+        ),
+        TEST(lambda budget, days: 50000 <= budget < 80000 and 6 <= days <= 10),
+    )
+    def rule_business_long_economy(self, budget: int, days: int) -> None:
+        self.register_match("business-long-economy")
+
+    @_register_rule(
+        name="mixed-family-culture",
+        priority=310,
+        recommendation=(
+            "Семейный микс: половина дня экскурсии, половина — отдых: "
+            "например, Казань, Суздаль, Калининград"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="mild"),
+            ConditionSpec(slot="travel_type", op="eq", value="mixed"),
+            ConditionSpec(slot="trip_days", op="gte", value=5),
+            ConditionSpec(slot="trip_days", op="lte", value=8),
+            ConditionSpec(slot="companions", op="eq", value="family"),
+            ConditionSpec(slot="service_level", op="eq", value="standard"),
+            ConditionSpec(slot="hobby", op="eq", value="museum"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="mild",
+            travel_type="mixed",
+            trip_days=MATCH.days,
+            companions="family",
+            service_level="standard",
+            hobby="museum",
+        ),
+        TEST(lambda days: 5 <= days <= 8),
+    )
+    def rule_mixed_family_culture(self, days: int) -> None:
+        self.register_match("mixed-family-culture")
+
+    @_register_rule(
+        name="solo-eco-winter",
+        priority=309,
+        recommendation=(
+            "Зимний эко-тур в одиночку с возможным гидом: "
+            "например, Хибины, Байкал (лёд), Карелия"
+        ),
+        conditions=(
+            ConditionSpec(slot="climate", op="eq", value="cold"),
+            ConditionSpec(slot="season", op="eq", value="winter"),
+            ConditionSpec(slot="travel_type", op="eq", value="eco"),
+            ConditionSpec(slot="budget_rub", op="gte", value=60000),
+            ConditionSpec(slot="budget_rub", op="lt", value=100000),
+            ConditionSpec(slot="trip_days", op="gte", value=5),
+            ConditionSpec(slot="trip_days", op="lte", value=7),
+            ConditionSpec(slot="companions", op="eq", value="solo"),
+            ConditionSpec(slot="service_level", op="eq", value="standard"),
+            ConditionSpec(slot="hobby", op="eq", value="hiking"),
+            ConditionSpec(slot="insurance", op="eq", value="yes"),
+        ),
+    )
+    @Rule(
+        TravelInput(
+            climate="cold",
+            season="winter",
+            travel_type="eco",
+            budget_rub=MATCH.budget,
+            trip_days=MATCH.days,
+            companions="solo",
+            service_level="standard",
+            hobby="hiking",
+            insurance="yes",
+        ),
+        TEST(lambda budget, days: 60000 <= budget < 100000 and 5 <= days <= 7),
+    )
+    def rule_solo_eco_winter(self, budget: int, days: int) -> None:
+        self.register_match("solo-eco-winter")
 
     @Rule(TravelInput(), salience=-1000)
     def rule_default(self) -> None:
