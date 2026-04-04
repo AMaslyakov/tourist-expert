@@ -207,3 +207,5 @@ marimo/_lsp/
 __marimo__/
 consultation/
 .DS_Store
+
+.misc/
