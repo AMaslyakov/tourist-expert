@@ -38,16 +38,6 @@ class ConditionSpec:
 
 TRAVEL_FACTS: tuple[FactSpec, ...] = (
     FactSpec(
-        name="departure_city",
-        label="Город отправления",
-        field_type="string",
-        required=True,
-        validators=(
-            ValidatorSpec(kind="required", message="Укажите город отправления."),
-        ),
-        ui={"placeholder": "Например: Екатеринбург"},
-    ),
-    FactSpec(
         name="season",
         label="Сезон поездки",
         field_type="select",
@@ -70,7 +60,6 @@ TRAVEL_FACTS: tuple[FactSpec, ...] = (
         field_type="select",
         required=True,
         choices=(
-            ("dance", "Танцы"),
             ("hiking", "Походы"),
             ("museum", "Музеи"),
             ("food", "Гастрономия"),

@@ -50,7 +50,7 @@ class RuleEngineTests(unittest.TestCase):
 
         self.assertIsInstance(result, EvaluationResult)
         self.assertEqual(result.selected_rule, "warm-relax-premium")
-        self.assertIn("hobby-dance-korea", result.matched_rules)
+        self.assertIn("warm-relax-premium", result.matched_rules)
         self.assertGreater(len(result.steps), 50)
 
     def test_backward_goal_success(self) -> None:
@@ -71,6 +71,14 @@ class RuleEngineTests(unittest.TestCase):
         self.assertIsInstance(result, BackwardResult)
         self.assertTrue(result.achieved)
         self.assertEqual(result.selected_rule, "warm-relax-premium")
+        self.assertIn("warm-relax-premium", result.matched_rules)
+        self.assertIsNotNone(result.proof)
+        self.assertEqual(result.proof["type"], "goal")
+        self.assertEqual(result.proof["goal"], "*")
+        step_names = [step["step"] for step in result.steps]
+        self.assertIn("prove-goal", step_names)
+        self.assertIn("try-rule", step_names)
+        self.assertIn("prove-condition", step_names)
         self.assertGreater(len(result.steps), 50)
 
     def test_backward_goal_not_found(self) -> None:
@@ -87,6 +95,7 @@ class RuleEngineTests(unittest.TestCase):
         self.assertIsInstance(result, BackwardResult)
         self.assertFalse(result.achieved)
         self.assertIsNone(result.selected_rule)
+        self.assertEqual(result.steps[-1]["step"], "goal-not-found")
 
 
 if __name__ == "__main__":
