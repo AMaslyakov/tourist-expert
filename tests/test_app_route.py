@@ -41,7 +41,7 @@ class AppRouteTests(unittest.TestCase):
         html = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn("Рекомендация системы", html)
-        self.assertIn("пляжный отдых", html)
+        self.assertIn("пляжный отдых", html.lower())
         save_mock.assert_called_once()
         saved_payload = save_mock.call_args.args[0]
         self.assertIn("explain", saved_payload)

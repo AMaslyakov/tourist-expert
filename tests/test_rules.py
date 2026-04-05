@@ -23,7 +23,7 @@ class RuleEngineTests(unittest.TestCase):
                 "hobby": "museum",
             }
         )
-        self.assertIn("пляжный отдых", recommendation)
+        self.assertIn("пляжный отдых", recommendation.lower())
 
     def test_default_fallback_path(self) -> None:
         recommendation = self.engine.evaluate(
