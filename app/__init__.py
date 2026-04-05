@@ -13,7 +13,11 @@ from app.forms import (
     get_evaluation_input,
     get_session_input,
 )
-from app.rules import DEFAULT_RULE_NAME, EvaluationResult, TravelRuleEngine, init_rule_engine
+from app.prototype_testing import (
+    build_prototype_testing_context,
+    get_prototype_scenario_previews,
+)
+from app.rules import EvaluationResult, TravelRuleEngine, init_rule_engine
 from app.session_store import get_consultation_dir, save_consultation_session
 
 csrf = CSRFProtect()
@@ -88,64 +92,24 @@ def create_app() -> Flask:
         run_tests = request.args.get("run_tests") == "1"
         engine = app.extensions["expert_engine"]
         if not isinstance(engine, TravelRuleEngine):
-            return render_template("test.html", engine_error=True, run_tests=run_tests)
-
-        sample_facts = {
-            "season": "summer",
-            "hobby": "dance",
-            "budget_rub": 150000,
-            "trip_days": 10,
-            "climate": "warm",
-            "travel_type": "relax",
-            "companions": "couple",
-            "service_level": "premium",
-            "visa_mode": "visa_ready",
-            "insurance": "yes",
-        }
-
-        forward_result = None
-        backward_result = None
-        backward_steps: tuple[dict[str, object], ...] = ()
-        rule_chains: list[dict[str, object]] = []
-        if run_tests:
-            forward_result = engine.evaluate(sample_facts, explain=True)
-            backward_result = engine.backward(
-                goal="*",
-                known_facts=sample_facts,
-                explain=True,
+            return render_template(
+                "test.html",
+                engine_error=True,
+                run_tests=run_tests,
+                scenario_previews=get_prototype_scenario_previews(),
             )
-            backward_steps = backward_result.steps
-            if isinstance(backward_result.proof, dict):
-                raw_candidates = backward_result.proof.get("candidates")
-                if isinstance(raw_candidates, list):
-                    rule_chains = [
-                        item
-                        for item in raw_candidates
-                        if isinstance(item, dict)
-                    ]
 
-        all_rules = sorted(
-            (
-                metadata
-                for metadata in engine.engine.rule_metadata.values()
-                if metadata.name != DEFAULT_RULE_NAME
-            ),
-            key=lambda metadata: metadata.priority,
-            reverse=True,
-        )
+        test_context: dict[str, object] = {}
+        if run_tests:
+            test_context = build_prototype_testing_context(engine)
 
         return render_template(
             "test.html",
             engine_error=False,
             run_tests=run_tests,
-            sample_facts=sample_facts,
             rules_count=engine.rules_count(),
-            all_rules=all_rules,
-            forward_result=forward_result,
-            backward_result=backward_result,
-            backward_steps=backward_steps,
-            rule_chains=rule_chains,
-            default_rule_name=DEFAULT_RULE_NAME,
+            scenario_previews=get_prototype_scenario_previews(),
+            **test_context,
         )
 
     return app

@@ -3,15 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Тест вывода правил</title>
+  <title>Тестирование прототипа</title>
   <style>
     :root {
-      --bg: #f5f8fb;
-      --card: #ffffff;
-      --text: #1d2a38;
-      --muted: #5d6d80;
-      --border: #d8e1eb;
-      --accent: #0c7281;
+      --bg: #f6f1e8;
+      --bg-accent: #ddeaf0;
+      --card: rgba(255, 255, 255, 0.9);
+      --text: #20313a;
+      --muted: #5f7078;
+      --border: rgba(30, 61, 72, 0.12);
+      --accent: #145f6f;
+      --accent-strong: #0d4854;
+      --warm: #d8a451;
+      --ok-bg: #e8f4ec;
+      --ok-text: #1f6a40;
+      --warn-bg: #fff1db;
+      --warn-text: #935d12;
+      --shadow: 0 20px 50px rgba(44, 61, 70, 0.08);
     }
 
     * {
@@ -20,202 +28,618 @@
 
     body {
       margin: 0;
-      padding: 20px;
-      font-family: "Segoe UI", Tahoma, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at top right, #dff4f6, var(--bg) 40%);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(216, 164, 81, 0.2), transparent 28%),
+        radial-gradient(circle at top right, rgba(20, 95, 111, 0.18), transparent 32%),
+        linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
     }
 
-    .layout {
-      max-width: 1100px;
+    main {
+      max-width: 1280px;
       margin: 0 auto;
+      padding: 28px 18px 40px;
       display: grid;
-      gap: 14px;
+      gap: 18px;
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    h1, h2 {
-      margin: 0 0 10px 0;
+    .hero {
+      padding: 28px;
+      display: grid;
+      gap: 14px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(221, 234, 240, 0.88)),
+        linear-gradient(135deg, rgba(20, 95, 111, 0.07), rgba(216, 164, 81, 0.1));
     }
 
-    p {
+    .hero h1,
+    .section-title,
+    .scenario-title {
+      margin: 0;
+      font-family: "Iowan Old Style", "Georgia", serif;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .hero p,
+    .section-copy,
+    .muted {
       margin: 0;
       color: var(--muted);
+      line-height: 1.6;
     }
 
-    .grid {
+    .hero-top,
+    .meta-grid,
+    .result-grid,
+    .scenario-grid,
+    .facts-grid,
+    .performance-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 14px;
     }
 
-    ul {
-      margin: 8px 0 0 0;
-      padding-left: 20px;
+    .hero-top {
+      grid-template-columns: 2.1fr 1fr;
+      align-items: start;
     }
 
-    li {
-      margin: 4px 0;
-      word-break: break-word;
+    .hero-statbox {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(20, 95, 111, 0.12);
     }
 
-    code {
-      background: #f2f5f8;
-      border: 1px solid #e0e8ef;
-      border-radius: 6px;
-      padding: 1px 5px;
+    .hero-statbox strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: var(--accent-strong);
+    }
+
+    .run-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
     }
 
     .run-button {
       border: 0;
-      padding: 10px 14px;
-      border-radius: 8px;
-      background: var(--accent);
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
       color: #fff;
       cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 12px 24px rgba(20, 95, 111, 0.22);
+    }
+
+    .run-hint {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(20, 95, 111, 0.08);
+      color: var(--accent-strong);
       font-size: 14px;
+    }
+
+    .section {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta-grid,
+    .result-grid,
+    .facts-grid,
+    .performance-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .metric,
+    .fact-item,
+    .preview,
+    .performance-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .metric-label,
+    .fact-label,
+    .performance-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-value,
+    .fact-value,
+    .performance-value {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-strong);
+    }
+
+    .scenario-card {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .scenario-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      justify-content: space-between;
+      align-items: start;
+    }
+
+    .scenario-title-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .badges,
+    .tag-list,
+    .trace-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge,
+    .tag,
+    .trace-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .badge.ok,
+    .trace-chip.ok {
+      background: var(--ok-bg);
+      color: var(--ok-text);
+    }
+
+    .badge.warn,
+    .trace-chip.warn {
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+
+    .badge.info,
+    .tag,
+    .trace-chip.info {
+      background: rgba(20, 95, 111, 0.08);
+      color: var(--accent-strong);
+    }
+
+    .result-grid {
+      align-items: start;
+    }
+
+    .rule-list,
+    .trace-list,
+    .preview-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .rule-list li,
+    .trace-list li,
+    .preview-list li {
+      margin: 8px 0;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .trace-panel {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 249, 250, 0.92));
+      max-height: 420px;
+      overflow: auto;
+      padding: 16px 18px;
+    }
+
+    .trace-list {
+      padding-left: 22px;
+    }
+
+    .trace-note {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .mono {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border);
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      background: rgba(20, 95, 111, 0.05);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    @media (max-width: 900px) {
+      .hero-top {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="layout">
-    <section class="card">
-      <h1>Тестовый запуск продукционной системы</h1>
-      <p>Маршрут: <code>/test</code>. Здесь выполняется прямой и обратный вывод на одном тестовом наборе фактов.</p>
-      <form method="get" action="{{ url_for('test_route') }}" style="margin-top: 12px;">
-        <input type="hidden" name="run_tests" value="1">
-        <button class="run-button" type="submit">Запустить тесты</button>
-      </form>
+  <main>
+    <section class="card hero">
+      <div class="hero-top">
+        <div style="display: grid; gap: 12px;">
+          <h1>Тестирование прототипа продукционной системы</h1>
+          <p>
+            Маршрут <span class="mono">/test</span> теперь показывает два учебных примера
+            прямого вывода, два учебных примера обратного вывода и отдельный блок
+            анализа производительности. Страница собрана для демонстрации преподавателю:
+            здесь видны исходные факты, итоговые правила, число шагов, число проходов,
+            время выполнения и подробные цепочки вывода.
+          </p>
+          <div class="run-form">
+            <form method="get" action="{{ url_for('test_route') }}">
+              <input type="hidden" name="run_tests" value="1">
+              <button class="run-button" type="submit">Запустить демонстрационные тесты</button>
+            </form>
+            <span class="run-hint">База знаний: {{ rules_count }} правил без fallback-правила</span>
+          </div>
+        </div>
+        <div class="hero-statbox">
+          <strong>2 + 2</strong>
+          <p class="muted">
+            Два сценария используются сразу в двух режимах: прямом и обратном выводе.
+            Это упрощает сравнение времени работы и делает демонстрацию наглядной.
+          </p>
+        </div>
+      </div>
     </section>
 
     {% if engine_error %}
-    <section class="card">
-      <h2>Ошибка инициализации</h2>
-      <p>Экземпляр движка правил недоступен в <code>app.extensions["expert_engine"]</code>.</p>
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Ошибка инициализации</h2>
+        <p class="section-copy">
+          Экземпляр движка правил недоступен в <span class="mono">app.extensions["expert_engine"]</span>.
+        </p>
+      </div>
     </section>
     {% elif not run_tests %}
-    <section class="card">
-      <h2>Ожидание запуска</h2>
-      <p>Нажмите кнопку <code>Запустить тесты</code>, чтобы увидеть цепочки прямого и обратного вывода.</p>
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Что будет показано после запуска</h2>
+        <p class="section-copy">
+          После запуска страница выполнит два демонстрационных сценария и покажет их
+          отдельно для прямого и обратного вывода.
+        </p>
+      </div>
+      <div class="scenario-grid">
+        {% for scenario in scenario_previews %}
+        <article class="preview">
+          <h3 class="scenario-title">{{ scenario.title }}</h3>
+          <p class="muted" style="margin-top: 8px;">{{ scenario.summary }}</p>
+          <p class="muted" style="margin-top: 10px;">
+            Цель обратного вывода: {{ scenario.backward_goal_label }}
+          </p>
+        </article>
+        {% endfor %}
+      </div>
     </section>
     {% else %}
-    <section class="card">
-      <h2>Тестовые факты</h2>
-      <ul>
-        {% for fact_name, fact_value in sample_facts.items() %}
-        <li><code>{{ fact_name }}</code>: {{ fact_value }}</li>
-        {% endfor %}
-      </ul>
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Служебные пояснения</h2>
+        <p class="section-copy">
+          На этой странице шаги не подрисованы искусственно: они собираются из реальной
+          трассировки движка. Для учебной наглядности показаны все проверки условий,
+          все попытки доказательства правил, пропуски правил и финальный выбор.
+        </p>
+      </div>
+      <div class="meta-grid">
+        <div class="metric">
+          <span class="metric-label">Критерий задания</span>
+          <span class="metric-value">Не менее {{ thresholds.steps }} шагов</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Критерий задания</span>
+          <span class="metric-value">Не менее {{ thresholds.passes }} проходов</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Прямой вывод</span>
+          <span class="metric-value">3 прохода трассировки</span>
+          <p class="trace-note">{{ forward_pass_explanation }}</p>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Обратный вывод</span>
+          <span class="metric-value">3 прохода трассировки</span>
+          <p class="trace-note">{{ backward_pass_explanation }}</p>
+        </div>
+      </div>
     </section>
 
-    <section class="grid">
-      <article class="card">
-        <h2>Прямой вывод</h2>
-        <p>Выбрано правило: <code>{{ forward_result.selected_rule }}</code></p>
-        <p>Сработало правил: {{ forward_result.matched_rules|length }}</p>
-        <ul>
-          {% for rule_name in forward_result.matched_rules %}
-          <li><code>{{ rule_name }}</code></li>
-          {% else %}
-          <li><code>{{ default_rule_name }}</code></li>
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Прямой вывод</h2>
+        <p class="section-copy">
+          В каждом примере система получает исходные факты, проходит по базе правил,
+          формирует конфликтное множество и выбирает итоговую рекомендацию по приоритету.
+        </p>
+      </div>
+
+      {% for scenario in scenarios %}
+      <article class="card scenario-card">
+        <div class="scenario-head">
+          <div class="scenario-title-wrap">
+            <h3 class="scenario-title">{{ scenario.title }}</h3>
+            <p class="muted">{{ scenario.summary }}</p>
+          </div>
+          <div class="badges">
+            <span class="badge ok">Результат: {{ scenario.forward.selected_rule }}</span>
+            <span class="badge {% if scenario.forward.meets_step_requirement %}ok{% else %}warn{% endif %}">
+              Шагов {{ scenario.forward.step_count }}
+            </span>
+            <span class="badge {% if scenario.forward.meets_pass_requirement %}ok{% else %}warn{% endif %}">
+              Проходов {{ scenario.forward.passes }}
+            </span>
+            <span class="badge info">Время {{ scenario.forward.elapsed_ms }} мс</span>
+          </div>
+        </div>
+
+        <div class="facts-grid">
+          {% for fact in scenario.facts %}
+          <div class="fact-item">
+            <span class="fact-label">{{ fact.label }}</span>
+            <span class="fact-value">{{ fact.value }}</span>
+          </div>
           {% endfor %}
-        </ul>
-      </article>
+        </div>
 
-      <article class="card">
-        <h2>Обратный вывод</h2>
-        <p>Цель: <code>{{ backward_result.goal }}</code></p>
-        <p>Выбрано правило: <code>{{ backward_result.selected_rule }}</code></p>
-        <p>Сработало правил: {{ backward_result.matched_rules|length }}</p>
-        <ul>
-          {% for rule_name in backward_result.matched_rules %}
-          <li><code>{{ rule_name }}</code></li>
-          {% else %}
-          <li><code>{{ default_rule_name }}</code></li>
-          {% endfor %}
-        </ul>
-      </article>
-    </section>
+        <div class="result-grid">
+          <div class="metric">
+            <span class="metric-label">Итоговое правило</span>
+            <span class="metric-value">{{ scenario.forward.selected_rule }}</span>
+            <p class="trace-note">priority={{ scenario.forward.selected_priority }}</p>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Итоговая рекомендация</span>
+            <span class="metric-value" style="font-size: 16px; line-height: 1.45;">{{ scenario.forward.recommendation }}</span>
+          </div>
+        </div>
 
-    <section class="card">
-      <h2>Цепочка шагов обратного вывода</h2>
-      <p>Всего шагов: {{ backward_steps|length }}, проходов: {{ backward_result.passes }}</p>
-      <ol>
-        {% for step in backward_steps %}
-        <li>
-          {% if step.step == "prove-goal" %}
-          Начинаем доказательство цели <code>{{ step.goal }}</code>.
-          {% elif step.step == "select-rules" %}
-          Подбираем правила для цели <code>{{ step.goal }}</code>: {{ step.candidates|join(", ") }}.
-          {% elif step.step == "try-rule" %}
-          Пробуем правило <code>{{ step.rule }}</code> (priority={{ step.priority }}).
-          {% elif step.step == "prove-condition" %}
-          Проверяем подцель: <code>{{ step.slot }} {{ step.operator }} {{ step.expected }}</code> для правила <code>{{ step.rule }}</code>.
-          {% elif step.step == "condition-from-facts" %}
-          Подцель подтверждена фактами: <code>{{ step.slot }}</code> = <code>{{ step.actual }}</code>.
-          {% elif step.step == "condition-failed" %}
-          Подцель не доказана: <code>{{ step.slot }} {{ step.operator }} {{ step.expected }}</code>, фактическое значение <code>{{ step.actual }}</code>.
-          {% elif step.step == "rule-proved" %}
-          Правило <code>{{ step.rule }}</code> доказано.
-          {% elif step.step == "rule-failed" %}
-          Правило <code>{{ step.rule }}</code> не доказано.
-          {% elif step.step == "goal-proved" %}
-          Цель <code>{{ step.goal }}</code> достигнута. Выбрано правило <code>{{ step.selected_rule }}</code>.
-          {% elif step.step == "candidate-also-matched" %}
-          Правило <code>{{ step.rule }}</code> тоже доказано, но по приоритету остаётся <code>{{ step.selected_rule }}</code>.
-          {% elif step.step == "fallback-default" %}
-          Переход к правилу по умолчанию <code>{{ step.rule }}</code>.
-          {% elif step.step == "goal-failed" %}
-          Цель <code>{{ step.goal }}</code> не достигнута.
-          {% elif step.step == "goal-not-found" %}
-          Цель <code>{{ step.goal }}</code> отсутствует в базе правил.
-          {% else %}
-          Шаг <code>{{ step.step }}</code>.
-          {% endif %}
-          <span style="color: var(--muted);">[глубина: {{ step.depth }}, проход: {{ step["pass"] }}]</span>
-        </li>
-        {% endfor %}
-      </ol>
-    </section>
-
-    <section class="card">
-      <h2>Цепочки для правил (обратный вывод)</h2>
-      <ul>
-        {% for chain in rule_chains %}
-        <li>
-          <code>{{ chain.rule }}</code>:
-          {% if chain.achieved %}доказано{% else %}не доказано{% endif %}
-          <ul>
-            {% for condition in chain.conditions %}
+        <div>
+          <div class="tag-list" style="margin-bottom: 10px;">
+            <span class="tag">{{ thresholds.steps }}+ шагов: {% if scenario.forward.meets_step_requirement %}выполнено{% else %}не выполнено{% endif %}</span>
+            <span class="tag">{{ thresholds.passes }}+ прохода: {% if scenario.forward.meets_pass_requirement %}выполнено{% else %}не выполнено{% endif %}</span>
+            <span class="tag">Сработало правил: {{ scenario.forward.matched_rules|length }}</span>
+          </div>
+          <ol class="rule-list">
+            {% for rule in scenario.forward.matched_rules %}
             <li>
-              <code>{{ condition.slot }} {{ condition.operator }} {{ condition.expected }}</code>
-              {% if condition.achieved %}
-              [ok] (actual={{ condition.actual }})
-              {% else %}
-              [fail] (actual={{ condition.actual }})
-              {% endif %}
+              <span class="mono">{{ rule.name }}</span> (priority={{ rule.priority }})<br>
+              <span class="muted">{{ rule.recommendation }}</span>
             </li>
             {% endfor %}
-          </ul>
-        </li>
-        {% endfor %}
-      </ul>
+          </ol>
+        </div>
+
+        <div>
+          <div class="trace-meta">
+            <span class="trace-chip ok">Подробная цепочка прямого вывода</span>
+            <span class="trace-chip info">{{ scenario.forward.trace_steps|length }} записей</span>
+          </div>
+          <div class="trace-panel">
+            <ol class="trace-list">
+              {% for step in scenario.forward.trace_steps %}
+              <li>
+                {{ step.message }}
+                <span class="trace-note">[шаг {{ loop.index }}, проход {{ step.pass }}, код {{ step.code }}]</span>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
     </section>
 
-    <section class="card">
-      <h2>Все зарегистрированные правила</h2>
-      <p>Всего правил (без default): {{ rules_count }}</p>
-      <ul>
-        {% for rule in all_rules %}
-        <li><code>{{ rule.name }}</code> (priority={{ rule.priority }})</li>
-        {% endfor %}
-      </ul>
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Обратный вывод</h2>
+        <p class="section-copy">
+          В этих же двух сценариях система запускает цель <span class="mono">*</span>,
+          то есть доказывает, какая гипотеза рекомендации действительно подтверждается
+          фактами и правилами. Поэтому в трассировке видны все кандидаты, подцели и
+          причины отказа или успеха.
+        </p>
+      </div>
+
+      {% for scenario in scenarios %}
+      <article class="card scenario-card">
+        <div class="scenario-head">
+          <div class="scenario-title-wrap">
+            <h3 class="scenario-title">{{ scenario.title }}</h3>
+            <p class="muted">{{ scenario.backward.goal_label }}</p>
+          </div>
+          <div class="badges">
+            <span class="badge ok">Гипотеза: {{ scenario.backward.selected_rule }}</span>
+            <span class="badge {% if scenario.backward.meets_step_requirement %}ok{% else %}warn{% endif %}">
+              Шагов {{ scenario.backward.step_count }}
+            </span>
+            <span class="badge {% if scenario.backward.meets_pass_requirement %}ok{% else %}warn{% endif %}">
+              Проходов {{ scenario.backward.passes }}
+            </span>
+            <span class="badge info">Время {{ scenario.backward.elapsed_ms }} мс</span>
+          </div>
+        </div>
+
+        <div class="facts-grid">
+          {% for fact in scenario.facts %}
+          <div class="fact-item">
+            <span class="fact-label">{{ fact.label }}</span>
+            <span class="fact-value">{{ fact.value }}</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="result-grid">
+          <div class="metric">
+            <span class="metric-label">Цель вывода</span>
+            <span class="metric-value">{{ scenario.backward.goal }}</span>
+            <p class="trace-note">{{ scenario.backward.goal_label }}</p>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Подтверждённая гипотеза</span>
+            <span class="metric-value">{{ scenario.backward.selected_rule }}</span>
+            {% if scenario.backward.selected_priority is not none %}
+            <p class="trace-note">priority={{ scenario.backward.selected_priority }}</p>
+            {% endif %}
+          </div>
+          <div class="metric">
+            <span class="metric-label">Рекомендация</span>
+            <span class="metric-value" style="font-size: 16px; line-height: 1.45;">{{ scenario.backward.recommendation }}</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="tag-list" style="margin-bottom: 10px;">
+            <span class="tag">{{ thresholds.steps }}+ шагов: {% if scenario.backward.meets_step_requirement %}выполнено{% else %}не выполнено{% endif %}</span>
+            <span class="tag">{{ thresholds.passes }}+ прохода: {% if scenario.backward.meets_pass_requirement %}выполнено{% else %}не выполнено{% endif %}</span>
+            <span class="tag">Доказано правил: {{ scenario.backward.matched_rules|length }}</span>
+          </div>
+          <ol class="rule-list">
+            {% for rule in scenario.backward.matched_rules %}
+            <li>
+              <span class="mono">{{ rule.name }}</span> (priority={{ rule.priority }})<br>
+              <span class="muted">{{ rule.recommendation }}</span>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+
+        <div>
+          <div class="trace-meta">
+            <span class="trace-chip ok">Подробная цепочка обратного вывода</span>
+            <span class="trace-chip info">{{ scenario.backward.trace_steps|length }} записей</span>
+          </div>
+          <div class="trace-panel">
+            <ol class="trace-list">
+              {% for step in scenario.backward.trace_steps %}
+              <li>
+                {{ step.message }}
+                <span class="trace-note">[шаг {{ loop.index }}, проход {{ step.pass }}, глубина {{ step.depth }}, код {{ step.code }}]</span>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+
+    <section class="card section">
+      <div class="section-head">
+        <h2 class="section-title">Производительность</h2>
+        <p class="section-copy">
+          Таблица ниже показывает время выполнения каждого тестового примера, а также
+          среднее время для двух направлений вывода.
+        </p>
+      </div>
+
+      <div class="performance-grid">
+        <div class="performance-item">
+          <span class="performance-label">Среднее время прямого вывода</span>
+          <span class="performance-value">{{ performance.average_forward_ms }} мс</span>
+        </div>
+        <div class="performance-item">
+          <span class="performance-label">Среднее время обратного вывода</span>
+          <span class="performance-value">{{ performance.average_backward_ms }} мс</span>
+        </div>
+        <div class="performance-item">
+          <span class="performance-label">Средняя разница</span>
+          <span class="performance-value">{{ performance.average_difference_ms }} мс</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Пример</th>
+            <th>Прямой вывод</th>
+            <th>Обратный вывод</th>
+            <th>Кто быстрее</th>
+            <th>Разница</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in performance.rows %}
+          <tr>
+            <td>{{ row.title }}</td>
+            <td>{{ row.forward_ms }} мс</td>
+            <td>{{ row.backward_ms }} мс</td>
+            <td>{{ row.faster }}</td>
+            <td>{{ row.delta_ms }} мс</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p class="section-copy">{{ performance.comparison }}</p>
     </section>
     {% endif %}
   </main>

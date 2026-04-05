@@ -41,7 +41,7 @@ class AppRouteTests(unittest.TestCase):
         html = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn("Рекомендация системы", html)
-        self.assertIn("пляжный отдых", html)
+        self.assertIn("пляжный отдых", html.lower())
         save_mock.assert_called_once()
         saved_payload = save_mock.call_args.args[0]
         self.assertIn("explain", saved_payload)
@@ -65,9 +65,11 @@ class AppRouteTests(unittest.TestCase):
         html = response.get_data(as_text=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Тестовый запуск продукционной системы", html)
-        self.assertIn("Запустить тесты", html)
-        self.assertIn("Ожидание запуска", html)
+        self.assertIn("Тестирование прототипа продукционной системы", html)
+        self.assertIn("Запустить демонстрационные тесты", html)
+        self.assertIn("Что будет показано после запуска", html)
+        self.assertIn("Пример 1. Летний премиальный отдых для пары", html)
+        self.assertIn("Пример 2. Зимний активный тур для компании друзей", html)
 
     def test_test_route_run_tests_shows_rule_chains(self) -> None:
         response = self.client.get("/test?run_tests=1")
@@ -76,10 +78,13 @@ class AppRouteTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Прямой вывод", html)
         self.assertIn("Обратный вывод", html)
-        self.assertIn("Цепочка шагов обратного вывода", html)
-        self.assertIn("Цепочки для правил", html)
-        self.assertIn("Все зарегистрированные правила", html)
+        self.assertIn("Производительность", html)
+        self.assertIn("Подробная цепочка прямого вывода", html)
+        self.assertIn("Подробная цепочка обратного вывода", html)
+        self.assertIn("51+ шагов", html)
+        self.assertIn("2+ прохода", html)
         self.assertIn("warm-relax-premium", html)
+        self.assertIn("winter-active-ski", html)
 
 
 if __name__ == "__main__":

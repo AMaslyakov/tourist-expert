@@ -1831,6 +1831,7 @@ class TravelRuleEngine:
         matched_rules: tuple[str, ...],
         selected_rule: str,
     ) -> tuple[dict[str, Any], ...]:
+        sorted_rules = _sorted_rules(self.engine.rule_metadata)
         steps: list[dict[str, Any]] = [
             {
                 "pass": 1,
@@ -1840,12 +1841,20 @@ class TravelRuleEngine:
             {
                 "pass": 2,
                 "step": "select-candidates",
-                "candidates": [item.name for item in _sorted_rules(self.engine.rule_metadata)],
+                "candidates": [item.name for item in sorted_rules],
             },
         ]
         matched_set = set(matched_rules)
 
-        for candidate in _sorted_rules(self.engine.rule_metadata):
+        for candidate in sorted_rules:
+            steps.append(
+                {
+                    "pass": 2,
+                    "step": "inspect-rule",
+                    "rule": candidate.name,
+                    "priority": candidate.priority,
+                }
+            )
             candidate_ok = True
             for condition in candidate.conditions:
                 condition_ok = _condition_is_satisfied(condition, normalized)
@@ -1874,6 +1883,22 @@ class TravelRuleEngine:
                         "selected": candidate.name == selected_rule,
                     }
                 )
+            else:
+                steps.append(
+                    {
+                        "pass": 2,
+                        "step": "rule-rejected",
+                        "rule": candidate.name,
+                    }
+                )
+
+        steps.append(
+            {
+                "pass": 3,
+                "step": "resolve-conflict",
+                "matched_rules": list(matched_rules),
+            }
+        )
 
         if selected_rule == DEFAULT_RULE_NAME:
             steps.append(
